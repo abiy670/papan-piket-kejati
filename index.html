@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papan Piket Digital - Kejaksaan Tinggi NTB</title>
+    <title>Papan Informasi & Piket Digital 3D - Kejaksaan Tinggi NTB</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -19,14 +19,14 @@
                         kejati: {
                             bg: '#f0fdf4',
                             card: '#ffffff',
-                            primary: '#047857',      /* Vibrant Emerald */
-                            emerald: '#059669',    /* Bright Emerald */
-                            light: '#dcfce7',      /* Very Light Emerald */
-                            border: '#a7f3d0',     /* Soft Mint Border */
-                            gold: '#b45309',       /* Rich Gold Text */
-                            goldbg: '#fef3c7',     /* Gold Accent Fill */
-                            goldaccent: '#f59e0b', /* Gold Highlight */
-                            dark: '#022c22'        /* Deep Forest Text */
+                            primary: '#047857',
+                            emerald: '#059669',
+                            light: '#dcfce7',
+                            border: '#a7f3d0',
+                            gold: '#b45309',
+                            goldbg: '#fef3c7',
+                            goldaccent: '#f59e0b',
+                            dark: '#022c22'
                         }
                     },
                     fontFamily: {
@@ -34,27 +34,24 @@
                         outfit: ['Outfit', 'sans-serif']
                     },
                     animation: {
-                        'pulse-glow': 'pulseGlow 2s infinite',
-                        'marquee': 'marquee 25s linear infinite',
-                        'float': 'float 4s ease-in-out infinite',
-                        'badge-bounce': 'badgeBounce 3s ease-in-out infinite'
+                        'marquee': 'marquee 28s linear infinite',
+                        'badge-bounce': 'badgeBounce 3s ease-in-out infinite',
+                        'eq-1': 'eqBar 0.9s ease-in-out infinite',
+                        'eq-2': 'eqBar 1.2s ease-in-out infinite 0.2s',
+                        'eq-3': 'eqBar 0.75s ease-in-out infinite 0.4s'
                     },
                     keyframes: {
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(245, 158, 11, 0.5)' },
-                            '50%': { boxShadow: '0 0 5px rgba(245, 158, 11, 0.1)' }
-                        },
                         marquee: {
                             '0%': { transform: 'translateX(100%)' },
                             '100%': { transform: 'translateX(-100%)' }
                         },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-4px)' }
-                        },
                         badgeBounce: {
-                            '0%, 100%': { transform: 'scale(1)' },
-                            '50%': { transform: 'scale(1.05)' }
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-2px) scale(1.05)' }
+                        },
+                        eqBar: {
+                            '0%, 100%': { height: '4px' },
+                            '50%': { height: '14px' }
                         }
                     }
                 }
@@ -63,55 +60,739 @@
     </script>
 
     <style>
-        /* Bright & Modern Glassmorphism Display for TV */
+        /* Base Luxury Emerald-Gold Atmospheric Canvas */
         html, body {
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 40%, #e0f2fe 100%);
+            background:
+                radial-gradient(circle at 50% 45%, rgba(254, 249, 195, 0.92) 0%, rgba(209, 250, 229, 0.88) 38%, rgba(224, 242, 254, 0.92) 76%, #d1fae5 100%);
+            perspective: 1600px;
         }
 
-        .bright-glass-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 2px solid rgba(16, 185, 129, 0.25);
-            box-shadow: 0 4px 20px rgba(4, 120, 87, 0.08);
+        /* ========== STUNNING 3D BACKGROUND SCENE ========== */
+        .scene-3d-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            perspective: 1100px;
         }
-        
-        .bright-day-card {
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-            border: 2px solid #a7f3d0;
-            box-shadow: 0 8px 20px -5px rgba(4, 120, 87, 0.08);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        #bg-particles-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        /* Volumetric Golden-Emerald Rotating Sunburst Rays */
+        .god-rays-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150vmax;
+            height: 150vmax;
+            transform: translate(-50%, -50%);
+            background: repeating-conic-gradient(
+                from 0deg,
+                rgba(245, 158, 11, 0.08) 0deg 8deg,
+                transparent 8deg 20deg,
+                rgba(16, 185, 129, 0.09) 20deg 28deg,
+                transparent 28deg 40deg
+            );
+            animation: spinGodRays 58s linear infinite;
+            mask-image: radial-gradient(circle at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 45%, transparent 72%);
+            -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 45%, transparent 72%);
+            z-index: 1;
+        }
+
+        @keyframes spinGodRays {
+            0%   { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Moving 3D Perspective Floor Grid */
+        .grid-3d-floor {
+            position: absolute;
+            bottom: -24%;
+            left: -50%;
+            width: 200%;
+            height: 72%;
+            background-image:
+                linear-gradient(to right, rgba(4, 120, 87, 0.13) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(217, 119, 6, 0.11) 1.5px, transparent 1.5px);
+            background-size: 58px 58px;
+            transform: rotateX(70deg);
+            transform-origin: center bottom;
+            animation: gridMove 12s linear infinite;
+            mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 82%);
+            -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 82%);
+            z-index: 1;
+        }
+
+        @keyframes gridMove {
+            0%   { background-position: 0 0; }
+            100% { background-position: 0 58px; }
+        }
+
+        /* Aurora Ambient Glow Orbs */
+        .aurora-orb {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(75px);
+            opacity: 0.45;
+            animation: orbDrift 15s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #10b981; top: -150px; left: -100px; }
+        .orb-2 { width: 450px; height: 450px; background: #f59e0b; bottom: -130px; right: 2%; animation-delay: -5s; }
+        .orb-3 { width: 420px; height: 420px; background: #34d399; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.34; animation: coreAuraPulse 6.5s ease-in-out infinite; }
+
+        @keyframes orbDrift {
+            0%   { transform: translate3d(0, 0, 0) scale(1); }
+            50%  { transform: translate3d(48px, -34px, 0) scale(1.14); }
+            100% { transform: translate3d(-34px, 34px, 0) scale(0.95); }
+        }
+
+        @keyframes coreAuraPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.26; }
+            50%      { transform: translate(-50%, -50%) scale(1.22); opacity: 0.50; }
+        }
+
+        /* ========== CENTERPIECE 3D HOLOGRAPHIC KEJAKSAAN EMBLEM ========== */
+        .emblem-center-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 550px;
+            height: 550px;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        .holo-ripple {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 9999px;
+            border: 2px solid rgba(245, 158, 11, 0.34);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.24);
+            animation: rippleExpand 6.5s cubic-bezier(0.15, 0.6, 0.35, 1) infinite;
+        }
+        .holo-ripple-2 {
+            animation-delay: -3.25s;
+            border-color: rgba(5, 150, 105, 0.34);
+        }
+
+        @keyframes rippleExpand {
+            0%   { transform: scale(0.75); opacity: 0.72; }
+            100% { transform: scale(2.15); opacity: 0; }
+        }
+
+        .gyro-ring {
+            position: absolute;
+            border-radius: 9999px;
+            transform-style: preserve-3d;
+        }
+
+        .gyro-ring-1 {
+            width: 515px;
+            height: 515px;
+            border: 3px dashed rgba(4, 120, 87, 0.30);
+            box-shadow: 0 0 28px rgba(16, 185, 129, 0.16);
+            animation: gyroSpin1 24s linear infinite;
+        }
+
+        .gyro-ring-2 {
+            width: 435px;
+            height: 435px;
+            border: 3.5px solid transparent;
+            border-top-color: rgba(245, 158, 11, 0.65);
+            border-bottom-color: rgba(245, 158, 11, 0.65);
+            border-left-color: rgba(4, 120, 87, 0.25);
+            border-right-color: rgba(4, 120, 87, 0.25);
+            box-shadow: 0 0 32px rgba(245, 158, 11, 0.24);
+            animation: gyroSpin2 16s linear infinite;
+        }
+
+        .gyro-ring-3 {
+            width: 358px;
+            height: 358px;
+            border: 2.5px solid rgba(5, 150, 105, 0.35);
+            border-top-color: #f59e0b;
+            border-right-color: transparent;
+            animation: gyroSpin3 12s linear infinite;
+        }
+
+        .gyro-orb {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 9999px;
+            background: radial-gradient(circle, #ffffff 0%, #fbbf24 45%, #d97706 100%);
+            box-shadow: 0 0 18px 5px rgba(245, 158, 11, 0.75);
+        }
+        .gyro-orb-emerald {
+            background: radial-gradient(circle, #ffffff 0%, #34d399 45%, #047857 100%);
+            box-shadow: 0 0 18px 5px rgba(16, 185, 129, 0.75);
+        }
+
+        @keyframes gyroSpin1 {
+            0%   { transform: rotateX(68deg) rotateY(16deg) rotateZ(0deg); }
+            100% { transform: rotateX(68deg) rotateY(16deg) rotateZ(360deg); }
+        }
+        @keyframes gyroSpin2 {
+            0%   { transform: rotateX(-58deg) rotateY(28deg) rotateZ(360deg); }
+            100% { transform: rotateX(-58deg) rotateY(28deg) rotateZ(0deg); }
+        }
+        @keyframes gyroSpin3 {
+            0%   { transform: rotateX(28deg) rotateY(-54deg) rotateZ(0deg); }
+            100% { transform: rotateX(28deg) rotateY(-54deg) rotateZ(360deg); }
+        }
+
+        /* True 3D Extruded Double-Sided Spinning Kejaksaan Logo */
+        .logo-medallion-3d {
+            position: relative;
+            width: 288px;
+            height: 288px;
+            transform-style: preserve-3d;
+            animation: medallionSpin3D 17s ease-in-out infinite;
+        }
+
+        .medallion-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: visible;
+        }
+
+        .medallion-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .medallion-depth {
+            filter: brightness(1.15) sepia(1) saturate(4) hue-rotate(5deg) drop-shadow(0 0 8px rgba(245, 158, 11, 0.45));
+            opacity: 0.30;
+        }
+
+        .medallion-front {
+            transform: translateZ(10px);
+            backface-visibility: hidden;
+            filter: drop-shadow(0 0 24px rgba(245, 158, 11, 0.55)) drop-shadow(0 12px 24px rgba(4, 120, 87, 0.35));
+            opacity: 0.54;
+        }
+
+        .medallion-back {
+            transform: rotateY(180deg) translateZ(10px);
+            backface-visibility: hidden;
+            filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.55)) drop-shadow(0 12px 24px rgba(180, 83, 9, 0.35));
+            opacity: 0.54;
+        }
+
+        @keyframes medallionSpin3D {
+            0%   { transform: translateY(0px) rotateX(8deg) rotateY(0deg) scale(1); }
+            25%  { transform: translateY(-15px) rotateX(-6deg) rotateY(90deg) scale(1.05); }
+            50%  { transform: translateY(0px) rotateX(8deg) rotateY(180deg) scale(1); }
+            75%  { transform: translateY(14px) rotateX(-6deg) rotateY(270deg) scale(1.05); }
+            100% { transform: translateY(0px) rotateX(8deg) rotateY(360deg) scale(1); }
+        }
+
+        /* Secondary Floating 3D Satellite Logos */
+        .satellite-emblem-stage {
+            position: absolute;
+            transform-style: preserve-3d;
+            z-index: 3;
+            animation: satelliteDrift 14s ease-in-out infinite;
+        }
+
+        .satellite-ring {
+            position: absolute;
+            inset: -18px;
+            border-radius: 9999px;
+            border: 2px dashed rgba(245, 158, 11, 0.38);
+            animation: orbitSpin1 10s linear infinite;
+        }
+
+        .satellite-logo-3d {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0.35;
+            filter: drop-shadow(0 0 18px rgba(4, 120, 87, 0.38));
+            animation: satelliteSpin 13s linear infinite;
+        }
+
+        @keyframes satelliteDrift {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50%      { transform: translate3d(20px, -26px, 40px); }
+        }
+
+        @keyframes satelliteSpin {
+            0%   { transform: rotateY(0deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(10deg); }
+        }
+
+        /* 3D Rotating Glass Cubes */
+        .cube-wrapper {
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: floatCube 18s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .cube-3d {
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spinCube 22s linear infinite;
+        }
+
+        .cube-face {
+            position: absolute;
+            inset: 0;
+            border: 1.5px solid rgba(5, 150, 105, 0.24);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(16, 185, 129, 0.08));
+            box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.45);
+            border-radius: 10px;
+        }
+
+        .cube-gold .cube-face {
+            border-color: rgba(245, 158, 11, 0.32);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(245, 158, 11, 0.12));
+        }
+
+        .cube-md { width: 56px; height: 56px; }
+        .cube-md .front  { transform: translateZ(28px); }
+        .cube-md .back   { transform: rotateY(180deg) translateZ(28px); }
+        .cube-md .right  { transform: rotateY(90deg) translateZ(28px); }
+        .cube-md .left   { transform: rotateY(-90deg) translateZ(28px); }
+        .cube-md .top    { transform: rotateX(90deg) translateZ(28px); }
+        .cube-md .bottom { transform: rotateX(-90deg) translateZ(28px); }
+
+        @keyframes spinCube {
+            0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+        }
+
+        @keyframes floatCube {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50%      { transform: translate3d(18px, -26px, 30px); }
+        }
+
+        body.eco-mode .scene-3d-bg {
+            display: none;
+        }
+
+        /* ========== 3D HEADER & LOGO ORBITAL ========== */
+        .glass-3d-header {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(240, 253, 244, 0.80) 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.28);
+            box-shadow: 0 12px 32px -12px rgba(4, 120, 87, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+        }
+
+        .logo-3d-stage {
+            perspective: 400px;
+            transform-style: preserve-3d;
+        }
+
+        .logo-3d-orbit-1 {
+            position: absolute;
+            inset: -5px;
+            border-radius: 9999px;
+            border: 2px solid rgba(5, 150, 105, 0.45);
+            border-top-color: #f59e0b;
+            border-bottom-color: transparent;
+            animation: orbitSpin1 6s linear infinite;
+        }
+
+        .logo-3d-orbit-2 {
+            position: absolute;
+            inset: -9px;
+            border-radius: 9999px;
+            border: 1.5px solid rgba(245, 158, 11, 0.45);
+            border-left-color: #047857;
+            border-right-color: transparent;
+            animation: orbitSpin2 9s linear infinite;
+        }
+
+        .logo-3d-float {
+            animation: logoTilt3D 5s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes orbitSpin1 {
+            0%   { transform: rotateX(62deg) rotateY(15deg) rotateZ(0deg); }
+            100% { transform: rotateX(62deg) rotateY(15deg) rotateZ(360deg); }
+        }
+        @keyframes orbitSpin2 {
+            0%   { transform: rotateX(-55deg) rotateY(30deg) rotateZ(360deg); }
+            100% { transform: rotateX(-55deg) rotateY(30deg) rotateZ(0deg); }
+        }
+        @keyframes logoTilt3D {
+            0%, 100% { transform: translateY(0px) rotateY(-12deg) rotateX(4deg); }
+            50%      { transform: translateY(-4px) rotateY(12deg) rotateX(-4deg); }
+        }
+
+        /* ========== ELEGANT CINEMATIC 3D SLIDE TRANSITIONS ========== */
+        .slide-stage-3d {
+            position: relative;
+            flex-grow: 1;
+            overflow: hidden;
+            perspective: 1600px;
+            border-radius: 1.25rem;
+        }
+
+        /* Silk Golden-Emerald Light Sweep Curtain on Slide Change */
+        .transition-silk-sweep {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 30;
+            overflow: hidden;
+            border-radius: 1.25rem;
+        }
+
+        .transition-silk-sweep::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -70%;
+            width: 48%;
+            height: 160%;
+            background: linear-gradient(
+                105deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.25) 35%,
+                rgba(251, 191, 36, 0.22) 50%,
+                rgba(52, 211, 153, 0.18) 65%,
+                transparent 100%
+            );
+            transform: skewX(-18deg);
+            opacity: 0;
+        }
+
+        .transition-silk-sweep.sweeping::after {
+            animation: silkSweepPass 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes silkSweepPass {
+            0%   { left: -65%; opacity: 0; }
+            25%  { opacity: 1; }
+            75%  { opacity: 0.9; }
+            100% { left: 135%; opacity: 0; }
+        }
+
+        /* Cinematic 3D Depth Crossfade + Soft Focus Blur */
+        .info-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            filter: blur(6px);
+            transform: translate3d(0, 22px, -45px) scale(0.975);
+            transition:
+                opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 4px;
+            will-change: transform, opacity, filter;
+        }
+
+        .info-slide.slide-active {
+            opacity: 1;
+            pointer-events: auto;
+            filter: blur(0px);
+            transform: translate3d(0, 0, 0) scale(1);
+            z-index: 5;
+        }
+
+        .info-slide.slide-exit {
+            opacity: 0;
+            filter: blur(5px);
+            transform: translate3d(0, -16px, -70px) scale(0.955);
+            z-index: 1;
+        }
+
+        /* Staggered Luxury Card Cascade inside Active Slide */
+        .info-slide .stagger-card {
+            opacity: 0;
+            transform: translate3d(0, 18px, 0) scale(0.98);
+            transition:
+                opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .info-slide.slide-active .stagger-card {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        .info-slide.slide-active .stagger-1 { transition-delay: 0.08s; }
+        .info-slide.slide-active .stagger-2 { transition-delay: 0.16s; }
+        .info-slide.slide-active .stagger-3 { transition-delay: 0.24s; }
+        .info-slide.slide-active .stagger-4 { transition-delay: 0.32s; }
+        .info-slide.slide-active .stagger-5 { transition-delay: 0.40s; }
+        .info-slide.slide-active .stagger-6 { transition-delay: 0.48s; }
+        .info-slide.slide-active .stagger-7 { transition-delay: 0.54s; }
+
+        /* Smooth Title Swap Animation */
+        .title-fade-in {
+            animation: titleGlideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes titleGlideIn {
+            0%   { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Elegant Slide Progress Track */
+        .slide-progress-track {
+            height: 3.5px;
+            width: 100%;
+            background: rgba(167, 243, 208, 0.45);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 7px;
+        }
+
+        .slide-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #047857 0%, #10b981 50%, #f59e0b 100%);
+            border-radius: 9999px;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.65);
+        }
+
+        /* ========== CRYSTAL LUXURY 3D CARDS ========== */
+        .days-grid-3d {
+            perspective: 1400px;
+        }
+
+        .bright-day-card, .glass-info-card {
+            background: linear-gradient(165deg, rgba(255, 255, 255, 0.84) 0%, rgba(248, 250, 252, 0.76) 100%);
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+            border: 1.5px solid rgba(167, 243, 208, 0.92);
+            border-bottom: 5px solid #34d399;
+            box-shadow:
+                0 16px 32px -10px rgba(4, 120, 87, 0.17),
+                0 4px 12px -2px rgba(15, 23, 42, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.96);
+            transform-style: preserve-3d;
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease, border-color 0.2s ease;
+        }
+
+        .bright-day-card:hover, .glass-info-card:hover {
+            transform: translateY(-3px) rotateX(1deg) scale(1.008);
+            box-shadow:
+                0 22px 38px -12px rgba(4, 120, 87, 0.25),
+                0 8px 16px -4px rgba(15, 23, 42, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .glass-info-card-gold {
+            background: linear-gradient(165deg, rgba(255, 253, 244, 0.89) 0%, rgba(254, 243, 199, 0.81) 100%);
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+            border: 1.5px solid #fbbf24;
+            border-bottom: 5px solid #d97706;
+            box-shadow:
+                0 16px 32px -10px rgba(217, 119, 6, 0.24),
+                inset 0 1px 0 rgba(255, 255, 255, 0.96);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease;
+        }
+
+        .glass-info-card-gold:hover {
+            transform: translateY(-3px) scale(1.008);
+            box-shadow: 0 22px 38px -10px rgba(217, 119, 6, 0.32);
         }
 
         .bright-day-card.active-day {
-            border: 2.5px solid #f59e0b;
-            background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%);
+            border: 2px solid #f59e0b;
+            border-bottom: 6px solid #d97706;
+            background: linear-gradient(170deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 251, 235, 0.85) 65%, rgba(254, 243, 199, 0.88) 100%);
+            box-shadow:
+                0 18px 38px -8px rgba(245, 158, 11, 0.38),
+                0 0 0 3px rgba(245, 158, 11, 0.16),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+            animation: activeCardFloat3D 5.5s ease-in-out infinite;
+            overflow: hidden;
         }
 
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #065f46 0%, #047857 40%, #b45309 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .bright-day-card.active-day::after, .hero-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -80%;
+            width: 45%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+            transform: rotate(22deg);
+            animation: cardShimmer 6s ease-in-out infinite;
+            pointer-events: none;
         }
 
+        @keyframes activeCardFloat3D {
+            0%, 100% { transform: translateY(0px) translateZ(10px); }
+            50%      { transform: translateY(-3px) translateZ(18px); }
+        }
+
+        @keyframes cardShimmer {
+            0%, 55% { left: -80%; }
+            100%    { left: 150%; }
+        }
+
+        .bright-day-card.dragging-card {
+            opacity: 0.45;
+            transform: scale(0.96) rotateZ(-1deg);
+            animation: none;
+        }
+
+        .bright-day-card.drag-over-card {
+            border: 2.5px dashed #047857;
+            background: rgba(236, 253, 245, 0.9);
+        }
+
+        .panel-drag-over {
+            outline: 3px dashed #047857;
+            outline-offset: -3px;
+            border-radius: 1.25rem;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Officer Rows */
         .supervisor-row {
-            background: linear-gradient(135deg, #fffbe3 0%, #fef3c7 100%);
+            background: linear-gradient(135deg, rgba(255, 253, 240, 0.95) 0%, rgba(254, 243, 199, 0.93) 100%);
             border: 1.5px solid #f59e0b;
-            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.12);
+            border-bottom: 3.5px solid #d97706;
+            box-shadow: 0 6px 14px -4px rgba(245, 158, 11, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.95);
         }
 
         .officer-row {
-            background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            transition: all 0.2s ease;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.93) 0%, rgba(248, 250, 252, 0.89) 100%);
+            border: 1px solid rgba(203, 213, 225, 0.95);
+            border-bottom: 3px solid #cbd5e1;
+            box-shadow: 0 4px 10px -4px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .officer-row:hover {
-            background: #f0fdf4;
+            background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
             border-color: #34d399;
+            border-bottom-color: #10b981;
+            transform: translateY(-1px);
+        }
+
+        /* Step Flow Connector Line on Slide 3 */
+        .flow-step-badge {
+            background: linear-gradient(135deg, #047857 0%, #059669 60%, #10b981 100%);
+            box-shadow: 0 6px 14px -3px rgba(4, 120, 87, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .flow-step-badge-gold {
+            background: linear-gradient(135deg, #b45309 0%, #d97706 60%, #f59e0b 100%);
+            box-shadow: 0 6px 14px -3px rgba(180, 83, 9, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        /* 3D TV Container & Locker Banner */
+        .tv-card-3d {
+            background: linear-gradient(165deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 252, 0.79) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(167, 243, 208, 0.95);
+            border-bottom: 5px solid #34d399;
+            box-shadow:
+                0 18px 34px -12px rgba(4, 120, 87, 0.22),
+                0 6px 14px -4px rgba(15, 23, 42, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .locker-3d-banner {
+            background: linear-gradient(125deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+            border: 1.5px solid #fde68a;
+            border-bottom: 5px solid #92400e;
+            box-shadow:
+                0 14px 28px -8px rgba(180, 83, 9, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .locker-icon-3d {
+            animation: lockerIconSpin 4.5s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes lockerIconSpin {
+            0%, 100% { transform: translateY(0) rotateY(-16deg); }
+            50%      { transform: translateY(-4px) rotateY(16deg); }
+        }
+
+        .clock-card-3d {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 253, 244, 0.94) 100%);
+            border: 1.5px solid #a7f3d0;
+            border-bottom: 4px solid #10b981;
+            box-shadow: 0 10px 20px -8px rgba(4, 120, 87, 0.24), inset 0 1px 0 #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .clock-card-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 24px -8px rgba(4, 120, 87, 0.32);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(120deg, #065f46 0%, #047857 42%, #b45309 75%, #047857 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 7s linear infinite;
+        }
+
+        @keyframes textShine {
+            0%   { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Resizer Handle */
+        .resizer-handle {
+            width: 14px;
+            cursor: col-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            user-select: none;
+            touch-action: none;
+            z-index: 20;
+        }
+
+        .resizer-bar {
+            width: 5px;
+            height: 70px;
+            background: linear-gradient(180deg, #34d399, #047857, #f59e0b);
+            border-radius: 9999px;
+            opacity: 0.65;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(4, 120, 87, 0.28);
+        }
+
+        .resizer-handle:hover .resizer-bar,
+        .resizer-handle.active .resizer-bar {
+            opacity: 1;
+            height: 120px;
+            width: 7px;
         }
 
         /* Custom Scrollbar for Admin Modal */
@@ -120,28 +801,104 @@
         ::-webkit-scrollbar-thumb { background: #059669; border-radius: 4px; }
     </style>
 </head>
-<body class="text-slate-800 h-screen flex flex-col justify-between font-sans select-none">
+<body class="text-slate-800 h-screen flex flex-col justify-between font-sans select-none relative">
+
+    <!-- ========== STUNNING 3D KEJAKSAAN HOLOGRAPHIC BACKGROUND ========== -->
+    <div class="scene-3d-bg" aria-hidden="true">
+        <div class="aurora-orb orb-1"></div>
+        <div class="aurora-orb orb-2"></div>
+        <div class="aurora-orb orb-3"></div>
+        <div class="god-rays-3d"></div>
+        <div class="grid-3d-floor"></div>
+        <canvas id="bg-particles-canvas"></canvas>
+
+        <!-- CENTERPIECE: 3D EXTRUDED SPINNING KEJAKSAAN RI LOGO + GYROSCOPE -->
+        <div class="emblem-center-stage">
+            <div class="holo-ripple"></div>
+            <div class="holo-ripple holo-ripple-2"></div>
+
+            <div class="gyro-ring gyro-ring-1">
+                <div class="gyro-orb gyro-orb-emerald" style="top: -7px; left: 50%; transform: translateX(-50%);"></div>
+                <div class="gyro-orb" style="bottom: -7px; left: 50%; transform: translateX(-50%);"></div>
+            </div>
+            <div class="gyro-ring gyro-ring-2">
+                <div class="gyro-orb" style="top: 50%; right: -7px; transform: translateY(-50%);"></div>
+                <div class="gyro-orb gyro-orb-emerald" style="top: 50%; left: -7px; transform: translateY(-50%);"></div>
+            </div>
+            <div class="gyro-ring gyro-ring-3"></div>
+
+            <div class="logo-medallion-3d">
+                <div class="medallion-layer medallion-depth" style="transform: translateZ(-8px);"><img class="kejaksaan-logo-img" alt="" /></div>
+                <div class="medallion-layer medallion-depth" style="transform: translateZ(-5px);"><img class="kejaksaan-logo-img" alt="" /></div>
+                <div class="medallion-layer medallion-depth" style="transform: translateZ(-2px);"><img class="kejaksaan-logo-img" alt="" /></div>
+                <div class="medallion-layer medallion-depth" style="transform: translateZ(2px);"><img class="kejaksaan-logo-img" alt="" /></div>
+                <div class="medallion-layer medallion-depth" style="transform: translateZ(5px);"><img class="kejaksaan-logo-img" alt="" /></div>
+                <div class="medallion-layer medallion-depth" style="transform: translateZ(8px);"><img class="kejaksaan-logo-img" alt="" /></div>
+
+                <div class="medallion-layer medallion-front">
+                    <img class="kejaksaan-logo-img" alt="Logo Kejaksaan RI 3D" />
+                </div>
+                <div class="medallion-layer medallion-back">
+                    <img class="kejaksaan-logo-img" alt="Logo Kejaksaan RI 3D" />
+                </div>
+            </div>
+        </div>
+
+        <!-- SECONDARY FLOATING 3D KEJAKSAAN EMBLEMS -->
+        <div class="satellite-emblem-stage" style="top: 15%; left: 10%; width: 135px; height: 135px;">
+            <div class="satellite-ring"></div>
+            <img class="kejaksaan-logo-img satellite-logo-3d" alt="" />
+        </div>
+
+        <div class="satellite-emblem-stage" style="bottom: 16%; right: 8%; width: 125px; height: 125px; animation-delay: -6s;">
+            <div class="satellite-ring" style="animation-direction: reverse; border-color: rgba(5, 150, 105, 0.35);"></div>
+            <img class="kejaksaan-logo-img satellite-logo-3d" style="animation-direction: reverse; animation-duration: 15s;" alt="" />
+        </div>
+
+        <!-- Floating 3D Glass Cubes Accent -->
+        <div class="cube-wrapper" style="bottom: 14%; left: 32%; animation-delay: -5s;">
+            <div class="cube-3d cube-md cube-gold" style="animation-duration: 18s; animation-direction: reverse;">
+                <div class="cube-face front"></div>
+                <div class="cube-face back"></div>
+                <div class="cube-face right"></div>
+                <div class="cube-face left"></div>
+                <div class="cube-face top"></div>
+                <div class="cube-face bottom"></div>
+            </div>
+        </div>
+
+        <div class="cube-wrapper" style="top: 16%; right: 24%; animation-delay: -10s;">
+            <div class="cube-3d cube-md" style="animation-duration: 24s;">
+                <div class="cube-face front"></div>
+                <div class="cube-face back"></div>
+                <div class="cube-face right"></div>
+                <div class="cube-face left"></div>
+                <div class="cube-face top"></div>
+                <div class="cube-face bottom"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- TOP HEADER -->
-    <header class="w-full px-6 py-3 bright-glass-header z-30 flex-shrink-0">
+    <header class="w-full px-6 py-2.5 glass-3d-header z-30 flex-shrink-0 relative">
         <div class="max-w-[1920px] mx-auto flex items-center justify-between">
             
-            <!-- Logo & Title Header -->
+            <!-- Logo 3D Orbital & Title Header -->
             <div class="flex items-center gap-4">
-                <!-- Official Logo Kejaksaan RI -->
-                <div class="relative w-14 h-14 flex-shrink-0 animate-float">
+                <div class="relative w-14 h-14 flex-shrink-0 logo-3d-stage flex items-center justify-center">
+                    <div class="logo-3d-orbit-1"></div>
+                    <div class="logo-3d-orbit-2"></div>
                     <img 
-                        src="https://www.kejaksaan.go.id/assets/img/webphada.png" 
+                        id="header-logo-img"
+                        class="kejaksaan-logo-img w-12 h-12 object-contain logo-3d-float filter drop-shadow-[0_6px_10px_rgba(4,120,87,0.3)] relative z-10"
                         alt="Logo Kejaksaan RI" 
-                        class="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(4,120,87,0.25)]"
-                        onerror="this.src='https://placehold.co/100x100/047857/ffffff?text=KEJAKSAAN'"
                     />
                 </div>
 
                 <div>
                     <div class="flex items-center gap-2 mb-0.5">
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-kejati-primary text-white tracking-wider shadow-sm">KEJAKSAAN RI</span>
-                        <span class="text-xs text-kejati-primary font-extrabold uppercase tracking-widest">Jadwal Penugasan Piket & Informasi Publik</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-gradient-to-r from-kejati-primary to-emerald-600 text-white tracking-wider shadow-sm border-b-2 border-emerald-900">KEJAKSAAN RI</span>
+                        <span class="text-xs text-kejati-primary font-extrabold uppercase tracking-widest">Papan Informasi Digital & Jadwal Piket</span>
                     </div>
                     <h1 id="display-office-name" class="text-xl lg:text-2xl font-black tracking-wide font-outfit gold-gradient-text uppercase leading-none drop-shadow-sm">
                         KEJAKSAAN TINGGI NUSA TENGGARA BARAT
@@ -150,69 +907,449 @@
             </div>
 
             <!-- Date & Live Clock (WITA) -->
-            <div class="flex items-center gap-5 bg-white px-5 py-2 rounded-2xl border-2 border-kejati-border shadow-sm">
+            <div onclick="openAdminModal()" title="Klik untuk mengatur jam & tanggal" class="clock-card-3d flex items-center gap-5 cursor-pointer px-5 py-2 rounded-2xl group">
                 <div class="text-right border-r-2 border-kejati-border pr-5">
-                    <div id="clock-day" class="text-base font-black text-kejati-gold uppercase tracking-wider font-outfit leading-tight">Selasa</div>
-                    <div id="clock-date" class="text-xs text-slate-600 font-bold">27 Oktober 2026</div>
+                    <div id="clock-day" class="text-base font-black text-kejati-gold uppercase tracking-wider font-outfit leading-tight">Kamis</div>
+                    <div id="clock-date" class="text-xs text-slate-600 font-bold">26 November 2026</div>
                 </div>
 
                 <div class="flex flex-col items-center justify-center">
                     <div id="clock-time" class="text-2xl lg:text-3xl font-black font-outfit tracking-wider text-kejati-dark drop-shadow-sm">
                         00:00:00
                     </div>
-                    <span class="text-[9px] uppercase font-black text-kejati-emerald tracking-widest -mt-0.5">WITA (UTC+8)</span>
+                    <div class="flex items-center gap-1 -mt-0.5">
+                        <span id="clock-tz-label" class="text-[9px] uppercase font-black text-kejati-emerald tracking-widest">WITA (UTC+8)</span>
+                        <i class="fa-solid fa-pen text-[8px] text-slate-400 group-hover:text-kejati-primary"></i>
+                    </div>
                 </div>
             </div>
 
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA (SPLIT SCREEN LAYOUT) -->
-    <main class="flex-grow p-4 max-w-[1920px] w-full mx-auto flex flex-col lg:flex-row gap-4 overflow-hidden h-full">
+    <!-- MAIN CONTENT AREA (RESIZABLE & SWAPPABLE SPLIT SCREEN LAYOUT) -->
+    <main id="main-workspace" class="flex-grow p-3.5 max-w-[1920px] w-full mx-auto flex flex-col lg:flex-row overflow-hidden h-full relative z-10">
         
-        <!-- LEFT SECTION: 4-DAY DUTY SCHEDULE GRID (Approx 63% Width) -->
-        <section class="lg:w-[63%] flex flex-col h-full">
-            <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-clipboard-user text-kejati-primary text-lg"></i>
-                    <h2 class="text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider">Papan Penugasan Piket 4 Hari</h2>
+        <!-- SECTION A: AUTO-ROTATING MULTI-SLIDE INFORMATION BOARD -->
+        <section id="schedule-section" style="width: 63%;" class="flex flex-col h-full min-w-[280px] transition-[border] duration-150">
+            
+            <!-- Top Slide Controller & Draggable Swap Bar -->
+            <div 
+                draggable="true" 
+                ondragstart="onPanelDragStart(event, 'schedule')" 
+                ondragend="onPanelDragEnd(event)"
+                ondragover="onPanelDragOver(event, 'schedule')"
+                ondragleave="onPanelDragLeave(event)"
+                ondrop="onPanelDrop(event, 'schedule')"
+                title="Tarik dan lepaskan ke sisi sebelah untuk menukar posisi panel"
+                class="mb-2.5 cursor-grab active:cursor-grabbing bg-white/88 backdrop-blur-md hover:bg-white px-3.5 py-2 rounded-2xl border border-kejati-border border-b-[3px] border-b-emerald-300 shadow-sm transition flex-shrink-0"
+            >
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <!-- Dynamic Slide Title -->
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-grip-vertical text-slate-400 text-sm"></i>
+                        <div id="active-slide-icon" class="w-8 h-8 rounded-xl bg-gradient-to-br from-kejati-primary to-emerald-500 text-white flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-clipboard-user text-xs"></i>
+                        </div>
+                        <div id="slide-header-text-wrap">
+                            <h2 id="active-slide-title" class="text-xs lg:text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider leading-none">
+                                Papan Penugasan Piket 4 Hari
+                            </h2>
+                            <span id="active-slide-subtitle" class="text-[9px] font-bold text-kejati-primary uppercase tracking-widest">
+                                Slide 1/3 • Otomatis Berganti
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Slide Navigation Pills & Playback Controls -->
+                    <div class="flex items-center gap-1.5" onmousedown="event.stopPropagation()">
+                        <div id="slide-pills" class="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200">
+                            <!-- Rendered dynamically via JS -->
+                        </div>
+                        <div class="flex items-center gap-1 bg-emerald-50 p-1 rounded-xl border border-kejati-border">
+                            <button onclick="prevSlide()" class="w-6 h-6 rounded-lg hover:bg-white text-kejati-primary flex items-center justify-center text-[10px] transition" title="Slide Sebelumnya">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <button onclick="toggleSlideAutoPlay()" id="btn-slide-playpause" class="w-6 h-6 rounded-lg bg-kejati-primary text-white flex items-center justify-center text-[10px] shadow-xs transition" title="Jeda / Jalankan Slide Otomatis">
+                                <i class="fa-solid fa-pause"></i>
+                            </button>
+                            <button onclick="nextSlide()" class="w-6 h-6 rounded-lg hover:bg-white text-kejati-primary flex items-center justify-center text-[10px] transition" title="Slide Berikutnya">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <span class="text-xs font-bold text-slate-500 bg-white/80 px-2.5 py-1 rounded-lg border border-kejati-border">
-                    <i class="fa-solid fa-rotate text-emerald-600 mr-1"></i> Mode Penayangan Layar TV
-                </span>
+
+                <!-- Smooth Countdown Progress Bar -->
+                <div class="slide-progress-track">
+                    <div id="slide-progress-bar" class="slide-progress-fill"></div>
+                </div>
             </div>
 
-            <!-- Grid 4 Hari -->
-            <div id="days-grid" class="grid grid-cols-2 xl:grid-cols-4 gap-3 h-full">
-                <!-- Dynamic 4 Days Columns Rendered via JS -->
+            <!-- CINEMATIC 3D MULTI-SLIDE STAGE -->
+            <div class="slide-stage-3d">
+                <!-- Elegant Light Curtain Sweep Overlay -->
+                <div id="transition-silk" class="transition-silk-sweep"></div>
+
+                <!-- SLIDE 0: PAPAN PENUGASAN PIKET 4 HARI -->
+                <div id="slide-panel-0" class="info-slide slide-active">
+                    <div id="days-grid" class="days-grid-3d grid grid-cols-2 xl:grid-cols-4 gap-3 h-full overflow-hidden">
+                        <!-- Dynamic 4 Days Columns Rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- SLIDE 1: LAYANAN PUBLIK TERPADU (PTSP) & JAM PELAYANAN -->
+                <div id="slide-panel-1" class="info-slide">
+                    <div class="flex flex-col gap-3 h-full">
+                        
+                        <!-- Top Compact PTSP Hours & Banner Strip -->
+                        <div class="stagger-card stagger-1 hero-shimmer relative overflow-hidden rounded-2xl px-4 py-3 bg-gradient-to-r from-emerald-950 via-kejati-primary to-emerald-700 text-white border-2 border-emerald-400 border-b-[4px] border-b-emerald-950 shadow-lg flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+                            <div class="flex items-center gap-3 z-10">
+                                <div class="w-11 h-11 rounded-xl bg-amber-400/20 border border-amber-300/60 flex items-center justify-center text-amber-300 text-xl flex-shrink-0 shadow-md">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <div>
+                                    <span class="px-2 py-0.5 rounded bg-amber-400 text-amber-950 text-[9px] font-black uppercase tracking-wider">PTSP KEJATI NTB</span>
+                                    <h3 class="text-sm lg:text-base font-black font-outfit uppercase tracking-wide text-white mt-0.5 leading-tight">
+                                        Pelayanan Terpadu Satu Pintu — Cepat, Akuntabel & Tanpa Biaya
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2 z-10 text-[10px]">
+                                <div class="bg-white/15 backdrop-blur-md border border-white/25 rounded-xl px-3 py-1.5">
+                                    <span class="block font-black text-amber-300 uppercase">Senin – Kamis</span>
+                                    <span id="display-ptsp-mon-thu" class="font-bold text-white">08.00 – 16.00 WITA</span>
+                                </div>
+                                <div class="bg-white/15 backdrop-blur-md border border-white/25 rounded-xl px-3 py-1.5">
+                                    <span class="block font-black text-amber-300 uppercase">Jumat</span>
+                                    <span id="display-ptsp-fri" class="font-bold text-white">08.00 – 16.30 WITA</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6 Executive Service Cards Grid -->
+                        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 flex-grow">
+                            
+                            <div class="stagger-card stagger-2 glass-info-card rounded-2xl p-3.5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-kejati-primary text-white flex items-center justify-center text-lg shadow-md">
+                                            <i class="fa-solid fa-handshake-angle"></i>
+                                        </div>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-kejati-primary">Gratis</span>
+                                    </div>
+                                    <h4 class="text-sm font-black font-outfit text-kejati-dark uppercase">Pelayanan Hukum (DATUN)</h4>
+                                    <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                        Konsultasi dan bantuan hukum bidang Perdata & Tata Usaha Negara bagi masyarakat maupun instansi pemerintah.
+                                    </p>
+                                </div>
+                                <span class="text-[10px] font-black text-kejati-primary uppercase mt-2 pt-1.5 border-t border-emerald-200/70"><i class="fa-solid fa-circle-check mr-1"></i>Loket DATUN / PTSP</span>
+                            </div>
+
+                            <div class="stagger-card stagger-3 glass-info-card-gold rounded-2xl p-3.5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center text-lg shadow-md">
+                                            <i class="fa-solid fa-bullhorn"></i>
+                                        </div>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">Rahasia</span>
+                                    </div>
+                                    <h4 class="text-sm font-black font-outfit text-amber-950 uppercase">Pengaduan Masyarakat (LAPDU)</h4>
+                                    <p class="text-[11px] text-slate-700 font-semibold mt-1 leading-snug">
+                                        Penerimaan laporan dugaan tindak pidana korupsi & pelanggaran hukum dengan perlindungan kerahasiaan pelapor.
+                                    </p>
+                                </div>
+                                <span class="text-[10px] font-black text-amber-800 uppercase mt-2 pt-1.5 border-t border-amber-300/70"><i class="fa-solid fa-lock mr-1"></i>Identitas Pelapor Dilindungi</span>
+                            </div>
+
+                            <div class="stagger-card stagger-4 glass-info-card rounded-2xl p-3.5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-600 to-blue-700 text-white flex items-center justify-center text-lg shadow-md">
+                                            <i class="fa-solid fa-file-shield"></i>
+                                        </div>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-sky-100 text-sky-800">Transparan</span>
+                                    </div>
+                                    <h4 class="text-sm font-black font-outfit text-kejati-dark uppercase">Informasi Perkara & Surat</h4>
+                                    <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                        Layanan pengecekan status penanganan perkara Pidum & Pidsus serta pendaftaran persuratan resmi masuk.
+                                    </p>
+                                </div>
+                                <span class="text-[10px] font-black text-sky-700 uppercase mt-2 pt-1.5 border-t border-emerald-200/70"><i class="fa-solid fa-bolt mr-1"></i>Respon Cepat Terukur</span>
+                            </div>
+
+                            <div class="stagger-card stagger-4 glass-info-card rounded-2xl p-3.5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center text-lg shadow-md">
+                                            <i class="fa-solid fa-graduation-cap"></i>
+                                        </div>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">Edukasi</span>
+                                    </div>
+                                    <h4 class="text-sm font-black font-outfit text-kejati-dark uppercase">Penerangan Hukum & Intelijen</h4>
+                                    <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                        Program Jaksa Masuk Sekolah (JMS), Jaksa Menyapa, Jaga Desa, serta pengawasan & posko intelijen daerah.
+                                    </p>
+                                </div>
+                                <span class="text-[10px] font-black text-emerald-700 uppercase mt-2 pt-1.5 border-t border-emerald-200/70"><i class="fa-solid fa-compass mr-1"></i>Bidang Intelijen</span>
+                            </div>
+
+                            <div class="stagger-card stagger-5 glass-info-card rounded-2xl p-3.5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-800 text-white flex items-center justify-center text-lg shadow-md">
+                                            <i class="fa-solid fa-id-card-clip"></i>
+                                        </div>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">Bebas Pungli</span>
+                                    </div>
+                                    <h4 class="text-sm font-black font-outfit text-kejati-dark uppercase">Besuk & Barang Bukti</h4>
+                                    <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                        Pengurusan surat izin besuk tahanan dan layanan pengembalian barang bukti sesuai putusan berkekuatan hukum tetap.
+                                    </p>
+                                </div>
+                                <span class="text-[10px] font-black text-indigo-700 uppercase mt-2 pt-1.5 border-t border-emerald-200/70"><i class="fa-solid fa-hand-holding-heart mr-1"></i>Tanpa Biaya</span>
+                            </div>
+
+                            <div class="stagger-card stagger-6 glass-info-card-gold rounded-2xl p-3.5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center text-lg shadow-md">
+                                            <i class="fa-solid fa-user-secret"></i>
+                                        </div>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800">Pengawasan</span>
+                                    </div>
+                                    <h4 class="text-sm font-black font-outfit text-amber-950 uppercase">Whistle Blowing System (WBS)</h4>
+                                    <p class="text-[11px] text-slate-700 font-semibold mt-1 leading-snug">
+                                        Kanal resmi pelaporan indikasi pelanggaran disiplin, kode etik, gratifikasi, atau pungli oleh oknum aparatur.
+                                    </p>
+                                </div>
+                                <span class="text-[10px] font-black text-red-700 uppercase mt-2 pt-1.5 border-t border-amber-300/70"><i class="fa-solid fa-shield mr-1"></i>Bidang Pengawasan</span>
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Contact Bar -->
+                        <div class="stagger-card stagger-7 rounded-2xl px-4 py-2.5 bg-gradient-to-r from-kejati-dark via-kejati-primary to-emerald-700 text-white border-2 border-emerald-400 shadow-md flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center text-sm shadow-sm">
+                                    <i class="fa-solid fa-headset"></i>
+                                </span>
+                                <div>
+                                    <span class="text-[9px] font-black uppercase text-amber-300 tracking-wider block">Hotline & Informasi PTSP</span>
+                                    <span id="display-contact-hotline" class="text-xs font-black tracking-wide">Call Center Kejaksaan 1500-222 • PTSP Kejati NTB</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-xs font-bold">
+                                <span><i class="fa-solid fa-globe text-amber-300 mr-1.5"></i><span id="display-contact-web">kejati-ntb.kejaksaan.go.id</span></span>
+                                <span><i class="fa-solid fa-location-dot text-amber-300 mr-1.5"></i><span id="display-contact-address">Jl. Langko No. 75, Mataram, NTB</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: ZONA INTEGRITAS WBK/WBBM & ALUR KUNJUNGAN TAMU -->
+                <div id="slide-panel-2" class="info-slide">
+                    <div class="flex flex-col gap-3 h-full">
+
+                        <!-- Luxury WBK / WBBM Commitment Hero -->
+                        <div class="stagger-card stagger-1 hero-shimmer relative overflow-hidden rounded-2xl p-4 bg-gradient-to-r from-emerald-950 via-kejati-primary to-amber-700 text-white border-2 border-amber-300 border-b-[5px] border-b-emerald-950 shadow-xl flex items-center justify-between gap-4 flex-shrink-0">
+                            <div class="z-10">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow-sm">
+                                        ZONA INTEGRITAS • MENUJU WBK / WBBM
+                                    </span>
+                                    <span class="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest">
+                                        Kejaksaan Tinggi NTB
+                                    </span>
+                                </div>
+                                <h3 class="text-lg lg:text-xl font-black font-outfit uppercase tracking-wide leading-tight text-white">
+                                    Tolak Gratifikasi, Pungli & Suap — Melayani Sepenuh Hati
+                                </h3>
+                                <p id="display-maklumat-text" class="text-xs text-emerald-50 font-semibold mt-1 max-w-2xl">
+                                    Dengan ini kami menyatakan sanggup menyelenggarakan pelayanan publik sesuai standar yang ditetapkan secara transparan, akuntabel, dan bebas dari korupsi.
+                                </p>
+                            </div>
+                            <div class="hidden sm:flex w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-md border border-amber-300/60 items-center justify-center flex-shrink-0 shadow-lg">
+                                <i class="fa-solid fa-scale-balanced text-3xl text-amber-300"></i>
+                            </div>
+                        </div>
+
+                        <!-- 4-Step Visual Guest Visit Flow -->
+                        <div class="stagger-card stagger-2 glass-info-card rounded-2xl p-4 flex flex-col justify-center flex-grow relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center text-xs shadow-sm">
+                                        <i class="fa-solid fa-route"></i>
+                                    </span>
+                                    <h4 class="text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider">
+                                        Alur Kunjungan & Standar Pelayanan Tamu
+                                    </h4>
+                                </div>
+                                <span class="text-[10px] font-black uppercase text-kejati-primary bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                                    4 Langkah Mudah
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 relative">
+                                <!-- Step 1 -->
+                                <div class="stagger-card stagger-3 bg-white/90 rounded-2xl p-3 border border-emerald-200 border-b-4 border-b-emerald-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="flow-step-badge w-8 h-8 rounded-xl text-white font-black font-outfit text-sm flex items-center justify-center">01</span>
+                                            <i class="fa-solid fa-id-card text-emerald-600/70 text-xl"></i>
+                                        </div>
+                                        <h5 class="text-xs lg:text-sm font-black font-outfit uppercase text-kejati-dark">Registrasi PTSP</h5>
+                                        <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                            Lapor maksud kunjungan ke petugas PTSP & tunjukkan kartu identitas resmi (KTP/SIM).
+                                        </p>
+                                    </div>
+                                    <span class="text-[9px] font-black uppercase text-emerald-700 mt-2">Meja Penerima Tamu</span>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="stagger-card stagger-4 bg-amber-50/90 rounded-2xl p-3 border border-amber-300 border-b-4 border-b-amber-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="flow-step-badge-gold w-8 h-8 rounded-xl text-white font-black font-outfit text-sm flex items-center justify-center">02</span>
+                                            <i class="fa-solid fa-vault text-amber-600/80 text-xl"></i>
+                                        </div>
+                                        <h5 class="text-xs lg:text-sm font-black font-outfit uppercase text-amber-950">Titip Elektronik</h5>
+                                        <p class="text-[11px] text-slate-700 font-semibold mt-1 leading-snug">
+                                            Titipkan handphone & perangkat elektronik di loker penyimpanan berkunci area PTSP.
+                                        </p>
+                                    </div>
+                                    <span class="text-[9px] font-black uppercase text-amber-800 mt-2">Area Loker Aman</span>
+                                </div>
+
+                                <!-- Step 3 -->
+                                <div class="stagger-card stagger-5 bg-white/90 rounded-2xl p-3 border border-emerald-200 border-b-4 border-b-emerald-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="flow-step-badge w-8 h-8 rounded-xl text-white font-black font-outfit text-sm flex items-center justify-center">03</span>
+                                            <i class="fa-solid fa-address-card text-emerald-600/70 text-xl"></i>
+                                        </div>
+                                        <h5 class="text-xs lg:text-sm font-black font-outfit uppercase text-kejati-dark">Kartu Visitor Pass</h5>
+                                        <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                            Terima dan kenakan kartu tanda pengenal tamu selama berada di lingkungan kantor.
+                                        </p>
+                                    </div>
+                                    <span class="text-[9px] font-black uppercase text-emerald-700 mt-2">Wajib Dikenakan</span>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="stagger-card stagger-6 bg-white/90 rounded-2xl p-3 border border-emerald-200 border-b-4 border-b-emerald-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="flow-step-badge w-8 h-8 rounded-xl text-white font-black font-outfit text-sm flex items-center justify-center">04</span>
+                                            <i class="fa-solid fa-user-check text-emerald-600/70 text-xl"></i>
+                                        </div>
+                                        <h5 class="text-xs lg:text-sm font-black font-outfit uppercase text-kejati-dark">Layanan Prima</h5>
+                                        <p class="text-[11px] text-slate-600 font-semibold mt-1 leading-snug">
+                                            Menuju ruang/loket layanan sesuai tujuan dengan pendampingan petugas piket siaga.
+                                        </p>
+                                    </div>
+                                    <span class="text-[9px] font-black uppercase text-emerald-700 mt-2">Cepat & Humanis</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom 3 Service Quality Guarantees -->
+                        <div class="stagger-card stagger-7 grid grid-cols-1 md:grid-cols-3 gap-3 flex-shrink-0">
+                            <div class="glass-info-card-gold rounded-2xl p-3 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center text-base shadow-md flex-shrink-0">
+                                    <i class="fa-solid fa-ban"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black uppercase text-amber-800 block">Zero Pungli</span>
+                                    <p class="text-xs font-extrabold text-slate-800 leading-tight">Seluruh Layanan PTSP 100% Gratis</p>
+                                </div>
+                            </div>
+
+                            <div class="glass-info-card rounded-2xl p-3 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-kejati-primary to-emerald-600 text-white flex items-center justify-center text-base shadow-md flex-shrink-0">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black uppercase text-kejati-primary block">Aman & Tertib</span>
+                                    <p class="text-xs font-extrabold text-slate-800 leading-tight">Berpakaian Rapi, Sopan & Patuhi Protokol</p>
+                                </div>
+                            </div>
+
+                            <div class="glass-info-card rounded-2xl p-3 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-600 to-blue-700 text-white flex items-center justify-center text-base shadow-md flex-shrink-0">
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black uppercase text-sky-700 block">Survei Kepuasan</span>
+                                    <p class="text-xs font-extrabold text-slate-800 leading-tight">Beri Penilaian Layanan di Loket PTSP</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- RIGHT SECTION: YOUTUBE MEDIA PLAYER & LOCKER NOTICE (Approx 37% Width) -->
-        <section class="lg:w-[37%] flex flex-col gap-3 h-full">
+        <!-- DRAGGABLE SPLITTER HANDLE -->
+        <div id="split-resizer" class="resizer-handle hidden lg:flex" title="Geser ke kiri atau kanan untuk mengatur ukuran layar TV YouTube">
+            <div class="resizer-bar"></div>
+        </div>
+
+        <!-- SECTION B: PERSISTENT YOUTUBE MEDIA PLAYER & LOCKER NOTICE -->
+        <section id="media-section" style="width: 37%;" class="flex flex-col gap-3 h-full min-w-[280px] transition-[border] duration-150 pb-1">
             
             <!-- YouTube Player Container Card -->
-            <div class="bg-white rounded-2xl border-2 border-kejati-border p-3.5 shadow-sm flex flex-col justify-between flex-grow">
+            <div id="youtube-card" class="tv-card-3d rounded-2xl p-3.5 flex flex-col justify-between flex-grow overflow-hidden">
                 
-                <!-- Player Header -->
-                <div class="flex items-center justify-between pb-2 mb-2 border-b-2 border-slate-100">
+                <!-- Player Header (Draggable to swap side) -->
+                <div 
+                    draggable="true"
+                    ondragstart="onPanelDragStart(event, 'media')"
+                    ondragend="onPanelDragEnd(event)"
+                    ondragover="onPanelDragOver(event, 'media')"
+                    ondragleave="onPanelDragLeave(event)"
+                    ondrop="onPanelDrop(event, 'media')"
+                    title="Tarik dan lepaskan ke sisi sebelah untuk menukar posisi TV"
+                    class="flex items-center justify-between pb-2 mb-2 border-b-2 border-slate-100 cursor-grab active:cursor-grabbing gap-2 flex-wrap"
+                >
                     <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
+                        <i class="fa-solid fa-grip-vertical text-slate-400 text-sm"></i>
+                        <div class="flex items-end gap-[2px] h-3.5 px-1">
+                            <span class="w-[3px] bg-red-600 rounded-full animate-eq-1"></span>
+                            <span class="w-[3px] bg-amber-500 rounded-full animate-eq-2"></span>
+                            <span class="w-[3px] bg-emerald-600 rounded-full animate-eq-3"></span>
+                        </div>
                         <span class="text-xs font-black uppercase text-slate-800 tracking-wider flex items-center gap-1 font-outfit">
-                            <i class="fa-brands fa-youtube text-red-600 text-sm"></i> Media Informasi & Streaming
+                            <i class="fa-brands fa-youtube text-red-600 text-sm"></i> TV Siaran
                         </span>
                     </div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-600 uppercase tracking-wider">
-                        <i class="fa-solid fa-signal mr-1"></i> TV SIARAN
-                    </span>
+
+                    <!-- Quick Size Preset Buttons -->
+                    <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner" onmousedown="event.stopPropagation()">
+                        <button onclick="setMediaWidth(28)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded-lg text-slate-600 hover:bg-white transition" data-size="28" title="Ukuran TV Kecil (28%)">
+                            Kecil
+                        </button>
+                        <button onclick="setMediaWidth(37)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded-lg bg-kejati-primary text-white shadow-xs transition" data-size="37" title="Ukuran TV Normal (37%)">
+                            Normal
+                        </button>
+                        <button onclick="setMediaWidth(52)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded-lg text-slate-600 hover:bg-white transition" data-size="52" title="Ukuran TV Besar (52%)">
+                            Besar
+                        </button>
+                        <button onclick="toggleVideoExpand()" id="btn-expand-video" class="px-2 py-0.5 text-[10px] font-extrabold rounded-lg text-red-600 hover:bg-red-50 transition" title="Perbesar / Perkecil Kotak Video">
+                            <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Video Iframe Embed -->
-                <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                <div class="relative w-full flex-grow min-h-[180px] bg-slate-950 rounded-xl overflow-hidden shadow-[inset_0_2px_12px_rgba(0,0,0,0.6),0_6px_16px_rgba(15,23,42,0.18)] border-2 border-slate-800">
                     <iframe 
                         id="youtube-iframe"
                         class="w-full h-full object-cover"
-                        src="9689Bhx7N2A" 
+                        src="" 
                         title="YouTube Media Player"
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -221,42 +1358,39 @@
                 </div>
 
                 <!-- Video Info / Controls Preset -->
-                <div class="mt-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div class="mt-2.5 p-2 bg-gradient-to-r from-slate-50/90 to-emerald-50/70 rounded-xl border border-slate-200 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2 overflow-hidden">
-                        <div class="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs flex-shrink-0">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-red-700 text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-sm">
                             <i class="fa-solid fa-play"></i>
                         </div>
                         <div class="truncate">
                             <p class="text-[11px] font-black text-slate-800 truncate leading-tight">Saluran Resmi Kejaksaan Tinggi NTB</p>
-                            <p class="text-[9px] text-slate-500 font-bold truncate">YouTube Official Channel</p>
+                            <p class="text-[9px] text-slate-500 font-bold truncate">Tarik garis pemisah di samping untuk atur lebar</p>
                         </div>
                     </div>
-                    <button onclick="openAdminModal()" class="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[10px] font-bold text-slate-700 rounded-lg transition flex-shrink-0">
+                    <button onclick="openAdminModal()" class="px-2.5 py-1 bg-white hover:bg-emerald-50 border border-slate-300 border-b-2 text-[10px] font-bold text-slate-700 rounded-lg transition flex-shrink-0 shadow-xs">
                         <i class="fa-solid fa-link text-red-600 mr-1"></i> Ubah Video
                     </button>
                 </div>
             </div>
 
-            <!-- LOCKER NOTICE BOX (PENGINGAT MENITIPKAN HP/BARANG ELEKTRONIK) -->
-            <div class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 rounded-2xl p-3.5 text-white shadow-md border-2 border-amber-300 flex items-center gap-3 relative overflow-hidden flex-shrink-0">
-                <!-- Background Decor Pattern -->
-                <div class="absolute -right-4 -bottom-4 text-white/10 text-7xl font-black">
+            <!-- LOCKER NOTICE BOX (3D ELEVATED BANNER) -->
+            <div id="locker-notice-box" class="locker-3d-banner rounded-2xl p-3.5 text-white flex items-center gap-3.5 relative overflow-hidden flex-shrink-0">
+                <div class="absolute -right-3 -bottom-4 text-white/10 text-7xl font-black pointer-events-none">
                     <i class="fa-solid fa-vault"></i>
                 </div>
 
-                <!-- Icon Box -->
-                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-white text-2xl border border-white/30 shadow-sm">
-                    <i class="fa-solid fa-mobile-screen-button animate-bounce"></i>
+                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-white text-2xl border border-white/40 shadow-lg locker-icon-3d">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
 
-                <!-- Text Content -->
                 <div class="z-10">
                     <div class="flex items-center gap-1.5 mb-0.5">
-                        <span class="bg-white text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow-xs">
+                        <span class="bg-white text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider shadow-sm">
                             HIMBAUAN KEPADA PENGUNJUNG
                         </span>
                     </div>
-                    <h3 class="text-xs lg:text-sm font-black font-outfit uppercase leading-tight tracking-wide text-amber-50">
+                    <h3 class="text-xs lg:text-sm font-black font-outfit uppercase leading-tight tracking-wide text-amber-50 drop-shadow-xs">
                         Harap Menitipkan Barang Elektronik & Handphone
                     </h3>
                     <p class="text-[10px] text-amber-100 font-semibold leading-tight mt-0.5">
@@ -270,11 +1404,11 @@
     </main>
 
     <!-- FOOTER RUNNING TEXT & ACTIONS -->
-    <footer class="w-full bright-glass-header border-t-2 border-kejati-border flex-shrink-0 z-30">
+    <footer class="w-full glass-3d-header border-t-2 border-kejati-border flex-shrink-0 z-30 relative">
         <div class="max-w-[1920px] mx-auto flex items-center justify-between">
             
             <!-- Announcement Label -->
-            <div class="bg-kejati-primary text-white font-black px-5 py-2.5 flex items-center gap-2 flex-shrink-0 z-10 shadow-md">
+            <div class="bg-gradient-to-r from-kejati-primary to-emerald-600 text-white font-black px-5 py-2.5 flex items-center gap-2 flex-shrink-0 z-10 shadow-md">
                 <i class="fa-solid fa-bullhorn text-sm animate-bounce"></i>
                 <span class="uppercase tracking-wider text-xs font-outfit">PENGUMUMAN:</span>
             </div>
@@ -282,16 +1416,29 @@
             <!-- Marquee Running Text -->
             <div class="overflow-hidden whitespace-nowrap w-full py-2 relative flex items-center bg-white/60">
                 <div id="running-text" class="inline-block animate-marquee text-xs lg:text-sm font-bold text-kejati-dark tracking-wide">
-                    Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.
+                    Selamat Datang di Papan Informasi Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.
                 </div>
             </div>
 
-            <!-- Action Controls -->
-            <div class="flex items-center gap-2 px-3 flex-shrink-0 z-10 border-l-2 border-kejati-border bg-white py-1">
-                <button onclick="toggleFullscreen()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Layar Penuh TV">
+            <!-- Google Sheets Sync Status + Action Controls -->
+            <div class="flex items-center gap-1.5 px-3 flex-shrink-0 z-10 border-l-2 border-kejati-border bg-white/95 py-1">
+                <button onclick="syncFromGoogleSheets(true)" id="sync-status-badge" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-50 border border-slate-200 text-[10px] font-black text-slate-600 transition" title="Klik untuk tarik data terbaru dari Google Sheets">
+                    <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                    <span id="sync-status-text">Mode Lokal</span>
+                </button>
+                <button onclick="toggle3DBackground()" id="btn-toggle-3d" class="p-2 bg-kejati-light hover:bg-emerald-200 text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Aktif / Matikan Animasi Logo 3D Latar">
+                    <i class="fa-solid fa-cube text-base"></i>
+                </button>
+                <button onclick="swapMainPanels()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Tukar Posisi Kiri / Kanan">
+                    <i class="fa-solid fa-right-left text-base"></i>
+                </button>
+                <button onclick="resetLayout()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Reset Ukuran & Posisi Tata Letak">
+                    <i class="fa-solid fa-rotate-left text-base"></i>
+                </button>
+                <button onclick="toggleFullscreen()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Layar Penuh TV">
                     <i class="fa-solid fa-expand text-base"></i>
                 </button>
-                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Pengaturan Admin">
+                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Pengaturan Google Sheets, Slide, Waktu & Data Piket">
                     <i class="fa-solid fa-gear text-base"></i>
                 </button>
             </div>
@@ -304,10 +1451,10 @@
         <div class="bg-white border-2 border-kejati-primary rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden m-4">
             
             <!-- Modal Header -->
-            <div class="px-6 py-4 bg-kejati-primary text-white flex justify-between items-center">
+            <div class="px-6 py-4 bg-gradient-to-r from-kejati-primary to-emerald-700 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-sliders text-kejati-goldaccent text-xl"></i>
-                    <h2 class="text-xl font-bold font-outfit">Kelola Data Piket & Link Media YouTube</h2>
+                    <h2 class="text-xl font-bold font-outfit">Pengaturan Google Sheets, Slide, Waktu, Layanan & Data Piket</h2>
                 </div>
                 <button onclick="closeAdminModal()" class="text-white/80 hover:text-white text-xl">
                     <i class="fa-solid fa-xmark"></i>
@@ -317,26 +1464,130 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto flex-grow space-y-6 bg-slate-50">
                 
-                <!-- YouTube & General Info Settings -->
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <h3 class="text-xs font-bold text-kejati-primary uppercase tracking-wider"><i class="fa-brands fa-youtube mr-2 text-red-600"></i>Pengaturan YouTube & Header</h3>
+                <!-- Google Sheets Connection -->
+                <div class="bg-emerald-50 p-4 rounded-xl border-2 border-emerald-400 shadow-sm space-y-2.5">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h3 class="text-xs font-black text-emerald-900 uppercase tracking-wider">
+                            <i class="fa-solid fa-table mr-2 text-emerald-600"></i>Koneksi Google Sheets (Update Otomatis dari Laptop/HP)
+                        </h3>
+                        <button onclick="testSheetSyncFromModal()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black rounded-lg shadow-xs transition">
+                            <i class="fa-solid fa-rotate mr-1"></i> Tarik Data Sekarang
+                        </button>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">URL Web App Google Apps Script</label>
+                        <input type="text" id="input-sheet-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        <span class="text-[10px] text-slate-600">Agar Smart TV di lobi tersambung permanen tanpa perlu input manual di TV, tempelkan URL ini pada baris <b>const GOOGLE_SHEET_API_URL</b> di dalam file <b>index.html</b> di GitHub.</span>
+                    </div>
+                </div>
+
+                <!-- Auto-Slide Settings -->
+                <div class="bg-white p-4 rounded-xl border-2 border-amber-300 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h3 class="text-xs font-black text-amber-800 uppercase tracking-wider">
+                            <i class="fa-solid fa-layer-group mr-2 text-amber-600"></i>Pengaturan Slide Informasi Otomatis
+                        </h3>
+                        <span class="text-[10px] font-bold text-slate-500">Atur durasi perpindahan & pilih slide yang ditayangkan</span>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Status Slide Otomatis</label>
+                            <select id="input-slide-autoplay" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                                <option value="true">Aktif (Berganti Otomatis)</option>
+                                <option value="false">Nonaktif (Tetap di 1 Slide)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Durasi Per Slide (Detik)</label>
+                            <input type="number" min="4" max="120" id="input-slide-duration" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                            <span class="text-[10px] text-slate-400">Rekomendasi TV: 10 – 20 detik</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Slide yang Ditayangkan</label>
+                            <div class="flex flex-col gap-1 text-[11px] font-bold text-slate-700 pt-0.5">
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="chk-slide-0" class="accent-emerald-600"> 1. Jadwal Piket 4 Hari</label>
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="chk-slide-1" class="accent-emerald-600"> 2. Layanan PTSP & Jam Kerja</label>
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="chk-slide-2" class="accent-emerald-600"> 3. Zona Integritas & Alur Tamu</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time & Duty Hours Settings -->
+                <div class="bg-white p-4 rounded-xl border-2 border-emerald-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h3 class="text-xs font-black text-kejati-primary uppercase tracking-wider">
+                            <i class="fa-regular fa-clock mr-2 text-emerald-600"></i>Pengaturan Waktu Layar & Jam Piket
+                        </h3>
+                        <span class="text-[10px] font-bold text-slate-500">Pilih Mode Manual untuk mengetik tanggal & jam sendiri</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Mode Jam Layar</label>
+                            <select id="input-clock-mode" onchange="toggleManualTimeInputs()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                                <option value="auto">Otomatis (Waktu Perangkat)</option>
+                                <option value="manual">Manual (Ketik Tanggal & Jam)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Manual (Ketik)</label>
+                            <input type="text" id="input-manual-date" placeholder="DD-MM-YYYY (cth: 26-11-2026)" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50 disabled:bg-slate-200">
+                            <span class="text-[10px] text-slate-400">Format: HH-BB-TTTT (cth: 26-11-2026)</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Manual (Ketik)</label>
+                            <input type="text" id="input-manual-time" placeholder="JJ:MM:DD (cth: 07:30:00)" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50 disabled:bg-slate-200">
+                            <span class="text-[10px] text-slate-400">Format 24 jam: JJ:MM atau JJ:MM:DD</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Piket</label>
+                            <input type="text" id="input-duty-hours" placeholder="Contoh: 07.00 - 16.00 WITA" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                            <span class="text-[10px] text-slate-400">Tampil di bagian bawah kartu hari</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YouTube, Logo, PTSP & General Info Settings -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="text-xs font-bold text-kejati-primary uppercase tracking-wider"><i class="fa-brands fa-youtube mr-2 text-red-600"></i>Pengaturan YouTube, Logo 3D, Layanan PTSP & Header</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Instansi</label>
                             <input type="text" id="input-office-name" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
                         </div>
                         <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">URL / Nama File Logo Kejaksaan (Header & Background 3D)</label>
+                            <input type="text" id="input-logo-url" placeholder="https://www.kejaksaan.go.id/assets/img/webphada.png atau logo.png" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
+                        <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">YouTube Video / Live Stream ID or URL</label>
-                            <input type="text" id="input-youtube-id" placeholder="Contoh: dQw4w9WgXcQ atau URL YouTube" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                            <input type="text" id="input-youtube-id" placeholder="Contoh: 9689Bhx7N2A atau URL YouTube" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Teks Running Text</label>
                             <input type="text" id="input-running-text" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
                         </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Hotline / WhatsApp PTSP (Slide 2)</label>
+                            <input type="text" id="input-contact-hotline" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Website & Alamat Kantor (Slide 2)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="input-contact-web" placeholder="Website" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                                <input type="text" id="input-contact-address" placeholder="Alamat" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Teks Maklumat Pelayanan (Slide 3)</label>
+                            <input type="text" id="input-maklumat-text" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
                     </div>
                 </div>
 
-                <!-- Days & Officer Form Blocks -->
+                <!-- Days & Officer Form Blocks (Slide 1) -->
                 <div id="admin-days-container" class="space-y-6">
                     <!-- Dynamic Days Form Rendered via JS -->
                 </div>
@@ -356,80 +1607,880 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Data Piket Default
+        // =========================================================================
+        // TEMPEL URL WEB APP GOOGLE APPS SCRIPT ANDA DI DALAM TANDA KUTIP DI BAWAH:
+        // =========================================================================
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxolafEukI1rJTB_19enQBzuA9Z-N1KfNzVEv6X4_EF7g-1_g9Y5MBQJxIpiqLLEkyH/exec";
+        const SYNC_INTERVAL_MS = 60000; // Sinkronisasi otomatis setiap 60 detik
+
+        const DEFAULT_LOGO_URL = "https://www.kejaksaan.go.id/assets/img/webphada.png";
+
+        const FALLBACK_LOGO_SVG = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                <defs>
+                    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f59e0b"/>
+                        <stop offset="50%" stop-color="#047857"/>
+                        <stop offset="100%" stop-color="#b45309"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="92" fill="url(#g)" stroke="#fef3c7" stroke-width="6"/>
+                <circle cx="100" cy="100" r="76" fill="none" stroke="#fde68a" stroke-width="3" stroke-dasharray="6 4"/>
+                <text x="100" y="96" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="22">KEJAKSAAN</text>
+                <text x="100" y="122" text-anchor="middle" fill="#fef3c7" font-family="sans-serif" font-weight="800" font-size="16">RI • NTB</text>
+            </svg>`
+        );
+
+        const SLIDE_META = [
+            { id: 0, shortLabel: "Piket", title: "Papan Penugasan Piket 4 Hari", icon: "fa-clipboard-user" },
+            { id: 1, shortLabel: "Layanan PTSP", title: "Layanan Publik Terpadu (PTSP) & Jam Pelayanan", icon: "fa-handshake-angle" },
+            { id: 2, shortLabel: "WBK & Alur", title: "Zona Integritas (WBK/WBBM) & Alur Kunjungan Tamu", icon: "fa-scale-balanced" }
+        ];
+
+        // Data Piket Kosong (Siap Diisi dari Google Sheets / Admin)
         const defaultSchedule = [
             {
                 dayName: "SENIN",
                 dateLabel: "Hari Ke-1",
                 officers: [
-                    { role: "PENGAWAS PIKET", type: "pengawas", name: ".....", nip: "........", position: "." },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "......", nip: ".......", position: "." },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: ".......", nip: "......", position: "." },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "......", nip: "......", position: "." }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             },
             {
                 dayName: "SELASA",
                 dateLabel: "Hari Ke-2",
                 officers: [
-                     { role: "PENGAWAS PIKET", type: "pengawas", name: ".....", nip: "........", position: "." },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "......", nip: ".......", position: "." },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: ".......", nip: "......", position: "." },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "......", nip: "......", position: "." }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             },
             {
                 dayName: "RABU",
                 dateLabel: "Hari Ke-3",
                 officers: [
-                     { role: "PENGAWAS PIKET", type: "pengawas", name: ".....", nip: "........", position: "." },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "......", nip: ".......", position: "." },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: ".......", nip: "......", position: "." },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "......", nip: "......", position: "." }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             },
             {
                 dayName: "KAMIS",
                 dateLabel: "Hari Ke-4",
                 officers: [
-                    { role: "PENGAWAS PIKET", type: "pengawas", name: ".....", nip: "........", position: "." },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "......", nip: ".......", position: "." },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: ".......", nip: "......", position: "." },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "......", nip: "......", position: "." }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             }
         ];
 
+        const DEFAULT_MAKLUMAT = "Dengan ini kami menyatakan sanggup menyelenggarakan pelayanan publik sesuai standar yang ditetapkan secara transparan, akuntabel, dan bebas dari korupsi.";
+
         let state = {
+            sheetApiUrl: GOOGLE_SHEET_API_URL,
             officeName: "KEJAKSAAN TINGGI NUSA TENGGARA BARAT",
-            youtubeVideoId: "https://www.youtube.com/watch?v=9689Bhx7N2A&t=3149s", // Playlist / Video ID
-            runningText: "Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.",
+            logoUrl: DEFAULT_LOGO_URL,
+            youtubeVideoId: "9689Bhx7N2A",
+            runningText: "Selamat Datang di Papan Informasi Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.",
+            maklumatText: DEFAULT_MAKLUMAT,
+            ptspHours: {
+                monThu: "08.00 – 16.00 WITA",
+                fri: "08.00 – 16.30 WITA"
+            },
+            contactInfo: {
+                hotline: "Call Center Kejaksaan 1500-222 • PTSP Kejati NTB",
+                web: "kejati-ntb.kejaksaan.go.id",
+                address: "Jl. Langko No. 75, Mataram, NTB"
+            },
+            slideSettings: {
+                autoPlay: true,
+                durationSec: 12,
+                enabledSlides: [true, true, true]
+            },
+            timeSettings: {
+                mode: "auto",
+                offsetMs: 0,
+                dutyHours: "07.00 - 16.00 WITA"
+            },
+            layout: {
+                mediaWidthPercent: 37,
+                swapped: false,
+                videoExpanded: false,
+                enable3D: true
+            },
             schedule: []
         };
 
-        // Initialize App State
-        function initApp() {
-            const savedState = localStorage.getItem('kejati_piket_split_v1');
-            if (savedState) {
-                try {
-                    state = JSON.parse(savedState);
-                } catch(e) {
-                    state.schedule = defaultSchedule;
-                }
-            } else {
-                state.schedule = defaultSchedule;
-            }
+        let lastRenderedYouTubeId = "";
+        let lastRenderedLogoUrl = "";
+        let lastSyncedPayloadHash = "";
 
-            syncCurrentDayHighlight();
-            renderDashboard();
-            updateYouTubeEmbed();
-            startClock();
+        // Helper escape HTML
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
         }
 
-        // Highlight Active Day (WITA Time Sync)
+        // ========== GOOGLE SHEETS AUTO-SYNC ENGINE ==========
+        function getActiveSheetUrl() {
+            if (GOOGLE_SHEET_API_URL && GOOGLE_SHEET_API_URL.trim() !== '') {
+                return GOOGLE_SHEET_API_URL.trim();
+            }
+            return (state.sheetApiUrl || '').trim();
+        }
+
+        function setSyncBadge(status, text) {
+            const dot = document.getElementById('sync-status-dot');
+            const label = document.getElementById('sync-status-text');
+            if (!dot || !label) return;
+
+            dot.className = 'w-2 h-2 rounded-full ';
+            if (status === 'online') {
+                dot.className += 'bg-emerald-500 animate-pulse';
+            } else if (status === 'syncing') {
+                dot.className += 'bg-sky-500 animate-ping';
+            } else if (status === 'error') {
+                dot.className += 'bg-amber-500';
+            } else {
+                dot.className += 'bg-slate-400';
+            }
+            label.innerText = text;
+        }
+
+        async function syncFromGoogleSheets(forceApply = false) {
+            const apiUrl = getActiveSheetUrl();
+            if (!apiUrl) {
+                setSyncBadge('local', 'Mode Lokal');
+                return false;
+            }
+
+            if (forceApply) {
+                setSyncBadge('syncing', 'Menyinkronkan...');
+            }
+
+            try {
+                const separator = apiUrl.includes('?') ? '&' : '?';
+                const fetchUrl = `${apiUrl}${separator}t=${Date.now()}`;
+
+                const response = await fetch(fetchUrl, { method: 'GET', cache: 'no-store' });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const compareData = { settings: data.settings || {}, schedule: data.schedule || [] };
+                const payloadHash = JSON.stringify(compareData);
+
+                const now = getEffectiveNow();
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+
+                if (!forceApply && payloadHash === lastSyncedPayloadHash) {
+                    setSyncBadge('online', `Sheet Aktif • ${hh}:${mm}`);
+                    return true;
+                }
+
+                lastSyncedPayloadHash = payloadHash;
+                let slideDurationChanged = false;
+
+                if (data.settings) {
+                    const s = data.settings;
+                    if (s.NAMA_INSTANSI) state.officeName = s.NAMA_INSTANSI;
+                    if (s.YOUTUBE_ID) state.youtubeVideoId = s.YOUTUBE_ID;
+                    if (s.RUNNING_TEXT) state.runningText = s.RUNNING_TEXT;
+                    if (s.JAM_PIKET) state.timeSettings.dutyHours = s.JAM_PIKET;
+                    if (s.JAM_PTSP_SENIN_KAMIS) state.ptspHours.monThu = s.JAM_PTSP_SENIN_KAMIS;
+                    if (s.JAM_PTSP_JUMAT) state.ptspHours.fri = s.JAM_PTSP_JUMAT;
+                    if (s.HOTLINE_PTSP) state.contactInfo.hotline = s.HOTLINE_PTSP;
+                    if (s.WEBSITE) state.contactInfo.web = s.WEBSITE;
+                    if (s.ALAMAT) state.contactInfo.address = s.ALAMAT;
+                    if (s.MAKLUMAT) state.maklumatText = s.MAKLUMAT;
+                    if (s.LOGO_URL) state.logoUrl = s.LOGO_URL;
+
+                    if (s.DURASI_SLIDE_DETIK) {
+                        const parsedDur = Math.min(120, Math.max(4, parseInt(s.DURASI_SLIDE_DETIK, 10) || 12));
+                        if (parsedDur !== state.slideSettings.durationSec) {
+                            state.slideSettings.durationSec = parsedDur;
+                            slideDurationChanged = true;
+                        }
+                    }
+                }
+
+                if (Array.isArray(data.schedule) && data.schedule.length > 0) {
+                    state.schedule = data.schedule;
+                }
+
+                syncCurrentDayHighlight();
+                applyAllLogos();
+                renderDashboard();
+                updateYouTubeEmbed();
+                persistState();
+
+                if (slideDurationChanged) {
+                    updateSlideHeaderAndView(false);
+                    restartSlideTimer();
+                }
+
+                setSyncBadge('online', `Sheet Aktif • ${hh}:${mm}`);
+                return true;
+            } catch (err) {
+                console.warn('Gagal sinkronisasi Google Sheets:', err);
+                setSyncBadge('error', 'Offline (Cache)');
+                return false;
+            }
+        }
+
+        async function testSheetSyncFromModal() {
+            const urlVal = document.getElementById('input-sheet-url').value.trim();
+            if (!urlVal) {
+                alert('Silakan tempel URL Web App Google Apps Script terlebih dahulu.');
+                return;
+            }
+            state.sheetApiUrl = urlVal;
+            persistState();
+            const ok = await syncFromGoogleSheets(true);
+            if (ok) {
+                openAdminModal();
+                alert('Berhasil menarik data terbaru dari Google Sheets!');
+            } else {
+                alert('Gagal menarik data. Pastikan URL benar dan akses Deployment Apps Script diatur ke "Siapa saja (Anyone)".');
+            }
+        }
+
+        // ========== ELEGANT CINEMATIC MULTI-SLIDE ENGINE ==========
+        let currentSlideIdx = 0;
+        let slideTimer = null;
+        let isModalOpen = false;
+
+        function getEnabledSlideIndices() {
+            const arr = (state.slideSettings && Array.isArray(state.slideSettings.enabledSlides))
+                ? state.slideSettings.enabledSlides.slice(0, SLIDE_META.length)
+                : [true, true, true];
+            const enabled = [];
+            for (let i = 0; i < SLIDE_META.length; i++) {
+                if (arr[i] !== false) enabled.push(i);
+            }
+            return enabled.length > 0 ? enabled : [0];
+        }
+
+        function triggerSilkTransitionSweep() {
+            const sweepEl = document.getElementById('transition-silk');
+            if (!sweepEl) return;
+            sweepEl.classList.remove('sweeping');
+            void sweepEl.offsetWidth;
+            sweepEl.classList.add('sweeping');
+        }
+
+        function renderSlidePills() {
+            const pillsContainer = document.getElementById('slide-pills');
+            const enabled = getEnabledSlideIndices();
+            pillsContainer.innerHTML = '';
+
+            enabled.forEach((slideIdx) => {
+                const meta = SLIDE_META[slideIdx];
+                const isActive = slideIdx === currentSlideIdx;
+                pillsContainer.innerHTML += `
+                    <button
+                        onclick="goToSlide(${slideIdx})"
+                        class="px-2.5 py-0.5 rounded-lg text-[10px] font-black transition-all duration-300 flex items-center gap-1 ${isActive ? 'bg-kejati-primary text-white shadow-sm' : 'text-slate-600 hover:bg-white'}"
+                        title="${meta.title}"
+                    >
+                        <span>${slideIdx + 1}</span>
+                        <span class="hidden xl:inline">${meta.shortLabel}</span>
+                    </button>
+                `;
+            });
+        }
+
+        function updateSlideHeaderAndView(animateHeader = true) {
+            const meta = SLIDE_META[currentSlideIdx] || SLIDE_META[0];
+            const enabled = getEnabledSlideIndices();
+            const posInEnabled = Math.max(1, enabled.indexOf(currentSlideIdx) + 1);
+
+            const titleWrap = document.getElementById('slide-header-text-wrap');
+            if (animateHeader && titleWrap) {
+                titleWrap.classList.remove('title-fade-in');
+                void titleWrap.offsetWidth;
+                titleWrap.classList.add('title-fade-in');
+            }
+
+            document.getElementById('active-slide-title').innerText = meta.title;
+            document.getElementById('active-slide-icon').innerHTML = `<i class="fa-solid ${meta.icon} text-xs"></i>`;
+            document.getElementById('active-slide-subtitle').innerText = state.slideSettings.autoPlay
+                ? `Slide ${posInEnabled}/${enabled.length} • Transisi Otomatis (${state.slideSettings.durationSec} dtk)`
+                : `Slide ${posInEnabled}/${enabled.length} • Mode Manual (Dijeda)`;
+
+            SLIDE_META.forEach((m) => {
+                const panel = document.getElementById(`slide-panel-${m.id}`);
+                if (!panel) return;
+                if (m.id === currentSlideIdx) {
+                    panel.classList.remove('slide-exit');
+                    panel.classList.add('slide-active');
+                } else {
+                    if (panel.classList.contains('slide-active')) {
+                        panel.classList.remove('slide-active');
+                        panel.classList.add('slide-exit');
+                    } else {
+                        panel.classList.remove('slide-exit');
+                    }
+                }
+            });
+
+            const playPauseBtn = document.getElementById('btn-slide-playpause');
+            if (state.slideSettings.autoPlay) {
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                playPauseBtn.classList.add('bg-kejati-primary', 'text-white');
+                playPauseBtn.classList.remove('bg-amber-500');
+            } else {
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                playPauseBtn.classList.remove('bg-kejati-primary');
+                playPauseBtn.classList.add('bg-amber-500', 'text-white');
+            }
+
+            renderSlidePills();
+        }
+
+        function restartSlideTimer() {
+            if (slideTimer) {
+                clearTimeout(slideTimer);
+                slideTimer = null;
+            }
+
+            const progressBar = document.getElementById('slide-progress-bar');
+            const enabled = getEnabledSlideIndices();
+            const durationSec = Math.max(4, Number(state.slideSettings.durationSec) || 12);
+
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+
+            if (!state.slideSettings.autoPlay || enabled.length <= 1 || isModalOpen) {
+                return;
+            }
+
+            void progressBar.offsetWidth;
+            progressBar.style.transition = `width ${durationSec}s linear`;
+            progressBar.style.width = '100%';
+
+            slideTimer = setTimeout(() => {
+                nextSlide();
+            }, durationSec * 1000);
+        }
+
+        function goToSlide(idx) {
+            const enabled = getEnabledSlideIndices();
+            const target = enabled.includes(idx) ? idx : enabled[0];
+            if (target !== currentSlideIdx) {
+                triggerSilkTransitionSweep();
+            }
+            currentSlideIdx = target;
+            updateSlideHeaderAndView(true);
+            restartSlideTimer();
+        }
+
+        function nextSlide() {
+            const enabled = getEnabledSlideIndices();
+            const currPos = enabled.indexOf(currentSlideIdx);
+            const nextPos = (currPos + 1) % enabled.length;
+            if (enabled[nextPos] !== currentSlideIdx) {
+                triggerSilkTransitionSweep();
+            }
+            currentSlideIdx = enabled[nextPos];
+            updateSlideHeaderAndView(true);
+            restartSlideTimer();
+        }
+
+        function prevSlide() {
+            const enabled = getEnabledSlideIndices();
+            const currPos = enabled.indexOf(currentSlideIdx);
+            const prevPos = (currPos - 1 + enabled.length) % enabled.length;
+            if (enabled[prevPos] !== currentSlideIdx) {
+                triggerSilkTransitionSweep();
+            }
+            currentSlideIdx = enabled[prevPos];
+            updateSlideHeaderAndView(true);
+            restartSlideTimer();
+        }
+
+        function toggleSlideAutoPlay() {
+            state.slideSettings.autoPlay = !state.slideSettings.autoPlay;
+            persistState();
+            updateSlideHeaderAndView(false);
+            restartSlideTimer();
+        }
+
+        // Update all Kejaksaan logos (only when URL changes)
+        function applyAllLogos() {
+            const url = (state.logoUrl && state.logoUrl.trim() !== '') ? state.logoUrl.trim() : DEFAULT_LOGO_URL;
+            if (url === lastRenderedLogoUrl) return;
+            lastRenderedLogoUrl = url;
+
+            document.querySelectorAll('.kejaksaan-logo-img').forEach(img => {
+                img.onerror = function() {
+                    if (this.src !== FALLBACK_LOGO_SVG) {
+                        this.src = FALLBACK_LOGO_SVG;
+                    }
+                };
+                img.src = url;
+            });
+        }
+
+        // ========== AMBIENT GOLD & EMERALD 3D PARTICLE ENGINE ==========
+        let particleAnimFrame = null;
+
+        function initParticlesCanvas() {
+            const canvas = document.getElementById('bg-particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const colors = [
+                'rgba(245, 158, 11, 0.72)',
+                'rgba(251, 191, 36, 0.78)',
+                'rgba(5, 150, 105, 0.62)',
+                'rgba(16, 185, 129, 0.65)',
+                'rgba(255, 255, 255, 0.85)'
+            ];
+
+            const particles = Array.from({ length: 58 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 3.4 + 1.2,
+                speedY: -(Math.random() * 0.52 + 0.18),
+                speedX: (Math.random() - 0.5) * 0.32,
+                phase: Math.random() * Math.PI * 2,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            }));
+
+            function renderParticles() {
+                if (state.layout.enable3D === false) {
+                    particleAnimFrame = null;
+                    return;
+                }
+
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.phase += 0.015;
+                    p.y += p.speedY;
+                    p.x += p.speedX + Math.sin(p.phase) * 0.22;
+
+                    if (p.y < -15) {
+                        p.y = height + 15;
+                        p.x = Math.random() * width;
+                    }
+                    if (p.x < -15) p.x = width + 15;
+                    if (p.x > width + 15) p.x = -15;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = p.color;
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 115) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(16, 185, 129, ${(1 - dist / 115) * 0.16})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.shadowBlur = 0;
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                particleAnimFrame = requestAnimationFrame(renderParticles);
+            }
+
+            if (state.layout.enable3D !== false && !particleAnimFrame) {
+                particleAnimFrame = requestAnimationFrame(renderParticles);
+            }
+        }
+
+        // Get effective current Date
+        function getEffectiveNow() {
+            if (state.timeSettings && state.timeSettings.mode === "manual") {
+                return new Date(Date.now() + (Number(state.timeSettings.offsetMs) || 0));
+            }
+            return new Date();
+        }
+
+        // Parse typed manual date & time flexibly
+        function parseManualDateTime(dateStr, timeStr) {
+            const cleanDate = (dateStr || '').trim();
+            const cleanTime = (timeStr || '').trim().replace(/\./g, ':');
+
+            let year, month, day;
+            const dmyMatch = cleanDate.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+            const ymdMatch = cleanDate.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+
+            if (dmyMatch) {
+                day = parseInt(dmyMatch[1], 10);
+                month = parseInt(dmyMatch[2], 10);
+                year = parseInt(dmyMatch[3], 10);
+            } else if (ymdMatch) {
+                year = parseInt(ymdMatch[1], 10);
+                month = parseInt(ymdMatch[2], 10);
+                day = parseInt(ymdMatch[3], 10);
+            } else {
+                return null;
+            }
+
+            if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+            const timeMatch = cleanTime.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/);
+            if (!timeMatch) return null;
+
+            const hour = parseInt(timeMatch[1], 10);
+            const minute = parseInt(timeMatch[2], 10);
+            const second = timeMatch[3] !== undefined ? parseInt(timeMatch[3], 10) : 0;
+
+            if (hour > 23 || minute > 59 || second > 59) return null;
+
+            const parsedDate = new Date(year, month - 1, day, hour, minute, second);
+            if (
+                parsedDate.getFullYear() !== year ||
+                parsedDate.getMonth() !== month - 1 ||
+                parsedDate.getDate() !== day
+            ) {
+                return null;
+            }
+
+            return parsedDate;
+        }
+
+        // Save state helper (preserves user's saved officer schedule & layout)
+        function persistState() {
+            localStorage.setItem('kejati_piket_empty_v1', JSON.stringify(state));
+        }
+
+        // Initialize App State
+        function initApp() {
+            const savedState = localStorage.getItem('kejati_piket_empty_v1');
+            if (savedState) {
+                try {
+                    const parsed = JSON.parse(savedState);
+                    state = { ...state, ...parsed };
+                    delete state.agendaItems;
+                    if (!state.logoUrl) state.logoUrl = DEFAULT_LOGO_URL;
+                    if (!state.maklumatText) state.maklumatText = DEFAULT_MAKLUMAT;
+                    if (!state.ptspHours) state.ptspHours = { monThu: "08.00 – 16.00 WITA", fri: "08.00 – 16.30 WITA" };
+                    if (!state.contactInfo) {
+                        state.contactInfo = {
+                            hotline: "Call Center Kejaksaan 1500-222 • PTSP Kejati NTB",
+                            web: "kejati-ntb.kejaksaan.go.id",
+                            address: "Jl. Langko No. 75, Mataram, NTB"
+                        };
+                    }
+                    if (!state.slideSettings) {
+                        state.slideSettings = { autoPlay: true, durationSec: 12, enabledSlides: [true, true, true] };
+                    } else {
+                        const prevEnabled = Array.isArray(state.slideSettings.enabledSlides) ? state.slideSettings.enabledSlides : [true, true, true];
+                        state.slideSettings.enabledSlides = [
+                            prevEnabled[0] !== false,
+                            prevEnabled[1] !== false,
+                            prevEnabled[2] !== false
+                        ];
+                    }
+                    if (!state.layout) {
+                        state.layout = { mediaWidthPercent: 37, swapped: false, videoExpanded: false, enable3D: true };
+                    }
+                    if (typeof state.layout.enable3D === 'undefined') {
+                        state.layout.enable3D = true;
+                    }
+                    if (!state.timeSettings) {
+                        state.timeSettings = { mode: "auto", offsetMs: 0, dutyHours: "07.00 - 16.00 WITA" };
+                    }
+                    if (!Array.isArray(state.schedule) || state.schedule.length === 0) {
+                        state.schedule = JSON.parse(JSON.stringify(defaultSchedule));
+                    }
+                } catch(e) {
+                    state.schedule = JSON.parse(JSON.stringify(defaultSchedule));
+                }
+            } else {
+                state.schedule = JSON.parse(JSON.stringify(defaultSchedule));
+            }
+
+            if (GOOGLE_SHEET_API_URL && GOOGLE_SHEET_API_URL.trim() !== '') {
+                state.sheetApiUrl = GOOGLE_SHEET_API_URL.trim();
+            }
+
+            applyAllLogos();
+            syncCurrentDayHighlight();
+            applyLayoutSettings();
+            renderDashboard();
+            updateYouTubeEmbed();
+            setupSplitResizer();
+            initParticlesCanvas();
+            startClock();
+
+            const enabled = getEnabledSlideIndices();
+            currentSlideIdx = enabled[0];
+            updateSlideHeaderAndView(false);
+            restartSlideTimer();
+
+            // Tarik data awal & jalankan auto-sync Google Sheets tiap 60 detik
+            syncFromGoogleSheets(true);
+            setInterval(() => syncFromGoogleSheets(false), SYNC_INTERVAL_MS);
+        }
+
+        // Apply Saved Layout
+        function applyLayoutSettings() {
+            const workspace = document.getElementById('main-workspace');
+            const scheduleSec = document.getElementById('schedule-section');
+            const resizer = document.getElementById('split-resizer');
+            const mediaSec = document.getElementById('media-section');
+            const lockerBox = document.getElementById('locker-notice-box');
+            const expandBtn = document.getElementById('btn-expand-video');
+            const btn3D = document.getElementById('btn-toggle-3d');
+
+            if (state.layout.enable3D === false) {
+                document.body.classList.add('eco-mode');
+                btn3D.classList.remove('bg-kejati-light');
+                btn3D.classList.add('bg-white', 'opacity-60');
+            } else {
+                document.body.classList.remove('eco-mode');
+                btn3D.classList.add('bg-kejati-light');
+                btn3D.classList.remove('bg-white', 'opacity-60');
+                if (!particleAnimFrame) {
+                    initParticlesCanvas();
+                }
+            }
+
+            if (state.layout.swapped) {
+                workspace.appendChild(mediaSec);
+                workspace.appendChild(resizer);
+                workspace.appendChild(scheduleSec);
+            } else {
+                workspace.appendChild(scheduleSec);
+                workspace.appendChild(resizer);
+                workspace.appendChild(mediaSec);
+            }
+
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                const mediaPct = Math.min(72, Math.max(22, Number(state.layout.mediaWidthPercent) || 37));
+                const schedulePct = 100 - mediaPct;
+                mediaSec.style.width = `calc(${mediaPct}% - 7px)`;
+                scheduleSec.style.width = `calc(${schedulePct}% - 7px)`;
+            } else {
+                mediaSec.style.width = '100%';
+                scheduleSec.style.width = '100%';
+            }
+
+            document.querySelectorAll('.size-preset-btn').forEach(btn => {
+                const btnSize = Number(btn.getAttribute('data-size'));
+                if (Math.abs(btnSize - state.layout.mediaWidthPercent) <= 1) {
+                    btn.classList.add('bg-kejati-primary', 'text-white', 'shadow-xs');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.remove('bg-kejati-primary', 'text-white', 'shadow-xs');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+
+            if (state.layout.videoExpanded) {
+                lockerBox.classList.add('hidden');
+                expandBtn.innerHTML = '<i class="fa-solid fa-down-left-and-up-right-to-center"></i>';
+                expandBtn.title = 'Tampilkan Kembali Himbauan Loker';
+            } else {
+                lockerBox.classList.remove('hidden');
+                expandBtn.innerHTML = '<i class="fa-solid fa-up-right-and-down-left-from-center"></i>';
+                expandBtn.title = 'Perbesar Tinggi Video TV';
+            }
+        }
+
+        window.addEventListener('resize', applyLayoutSettings);
+
+        function toggle3DBackground() {
+            state.layout.enable3D = !state.layout.enable3D;
+            applyLayoutSettings();
+            persistState();
+        }
+
+        function setMediaWidth(percent) {
+            state.layout.mediaWidthPercent = percent;
+            applyLayoutSettings();
+            persistState();
+        }
+
+        function toggleVideoExpand() {
+            state.layout.videoExpanded = !state.layout.videoExpanded;
+            applyLayoutSettings();
+            persistState();
+        }
+
+        function swapMainPanels() {
+            state.layout.swapped = !state.layout.swapped;
+            applyLayoutSettings();
+            persistState();
+        }
+
+        function resetLayout() {
+            state.layout = {
+                mediaWidthPercent: 37,
+                swapped: false,
+                videoExpanded: false,
+                enable3D: true
+            };
+            applyLayoutSettings();
+            persistState();
+        }
+
+        // Drag & Drop Main Panels
+        let draggedPanel = null;
+
+        function onPanelDragStart(e, panelName) {
+            draggedPanel = panelName;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', panelName);
+        }
+
+        function onPanelDragEnd(e) {
+            draggedPanel = null;
+            document.getElementById('schedule-section').classList.remove('panel-drag-over');
+            document.getElementById('media-section').classList.remove('panel-drag-over');
+        }
+
+        function onPanelDragOver(e, targetPanel) {
+            if (!draggedPanel || draggedPanel === targetPanel) return;
+            e.preventDefault();
+            const targetEl = targetPanel === 'schedule' ? document.getElementById('schedule-section') : document.getElementById('media-section');
+            targetEl.classList.add('panel-drag-over');
+        }
+
+        function onPanelDragLeave(e) {
+            e.currentTarget.parentElement.classList.remove('panel-drag-over');
+        }
+
+        function onPanelDrop(e, targetPanel) {
+            e.preventDefault();
+            document.getElementById('schedule-section').classList.remove('panel-drag-over');
+            document.getElementById('media-section').classList.remove('panel-drag-over');
+            if (draggedPanel && draggedPanel !== targetPanel) {
+                swapMainPanels();
+            }
+            draggedPanel = null;
+        }
+
+        // Resizable Splitter Logic
+        function setupSplitResizer() {
+            const resizer = document.getElementById('split-resizer');
+            const workspace = document.getElementById('main-workspace');
+            const iframes = document.querySelectorAll('iframe');
+            let isResizing = false;
+
+            const startResize = () => {
+                isResizing = true;
+                resizer.classList.add('active');
+                document.body.style.cursor = 'col-resize';
+                iframes.forEach(f => f.style.pointerEvents = 'none');
+            };
+
+            const doResize = (clientX) => {
+                if (!isResizing) return;
+                const rect = workspace.getBoundingClientRect();
+                const offsetX = clientX - rect.left;
+                const totalWidth = rect.width;
+                if (totalWidth <= 0) return;
+
+                let leftPercent = (offsetX / totalWidth) * 100;
+                let mediaPercent = state.layout.swapped ? leftPercent : (100 - leftPercent);
+
+                mediaPercent = Math.min(72, Math.max(22, Math.round(mediaPercent * 10) / 10));
+                state.layout.mediaWidthPercent = mediaPercent;
+                applyLayoutSettings();
+            };
+
+            const stopResize = () => {
+                if (!isResizing) return;
+                isResizing = false;
+                resizer.classList.remove('active');
+                document.body.style.cursor = '';
+                iframes.forEach(f => f.style.pointerEvents = '');
+                persistState();
+            };
+
+            resizer.addEventListener('mousedown', startResize);
+            window.addEventListener('mousemove', (e) => doResize(e.clientX));
+            window.addEventListener('mouseup', stopResize);
+
+            resizer.addEventListener('touchstart', () => startResize(), { passive: true });
+            window.addEventListener('touchmove', (e) => {
+                if (isResizing && e.touches.length > 0) {
+                    doResize(e.touches[0].clientX);
+                }
+            }, { passive: true });
+            window.addEventListener('touchend', stopResize);
+        }
+
+        // Drag & Drop Reordering for Day Cards
+        let draggedDayIndex = null;
+
+        function onDayDragStart(e, idx) {
+            e.stopPropagation();
+            draggedDayIndex = idx;
+            e.currentTarget.classList.add('dragging-card');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/day-index', String(idx));
+        }
+
+        function onDayDragEnd(e) {
+            e.currentTarget.classList.remove('dragging-card');
+            document.querySelectorAll('.bright-day-card').forEach(c => c.classList.remove('drag-over-card'));
+            draggedDayIndex = null;
+        }
+
+        function onDayDragOver(e, idx) {
+            if (draggedDayIndex === null || draggedDayIndex === idx) return;
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.add('drag-over-card');
+        }
+
+        function onDayDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over-card');
+        }
+
+        function onDayDrop(e, targetIdx) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('drag-over-card');
+            if (draggedDayIndex === null || draggedDayIndex === targetIdx) return;
+
+            const movedItem = state.schedule.splice(draggedDayIndex, 1)[0];
+            state.schedule.splice(targetIdx, 0, movedItem);
+            draggedDayIndex = null;
+
+            persistState();
+            renderDashboard();
+        }
+
+        // Highlight Active Day
         function syncCurrentDayHighlight() {
             const daysMap = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-            const todayName = daysMap[new Date().getDay()];
+            const todayName = daysMap[getEffectiveNow().getDay()];
 
             state.schedule.forEach(day => {
                 day.isToday = (day.dayName.toUpperCase() === todayName);
@@ -437,43 +2488,61 @@
         }
 
         // Realtime WITA Clock
+        let lastTrackedDay = null;
+
         function startClock() {
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
             function update() {
-                const now = new Date();
+                const now = getEffectiveNow();
+                const currentDayIndex = now.getDay();
                 
-                document.getElementById('clock-day').innerText = days[now.getDay()];
+                document.getElementById('clock-day').innerText = days[currentDayIndex];
                 document.getElementById('clock-date').innerText = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
 
                 const h = String(now.getHours()).padStart(2, '0');
                 const m = String(now.getMinutes()).padStart(2, '0');
                 const s = String(now.getSeconds()).padStart(2, '0');
                 document.getElementById('clock-time').innerText = `${h}:${m}:${s}`;
+
+                const tzLabel = document.getElementById('clock-tz-label');
+                tzLabel.innerText = (state.timeSettings && state.timeSettings.mode === 'manual') ? 'WITA (MANUAL)' : 'WITA (UTC+8)';
+
+                if (lastTrackedDay !== null && lastTrackedDay !== currentDayIndex) {
+                    syncCurrentDayHighlight();
+                    renderDashboard();
+                }
+                lastTrackedDay = currentDayIndex;
             }
 
             update();
             setInterval(update, 1000);
         }
 
-        // Helper to extract YouTube Video / Playlist ID
+        // YouTube Embed (supports watch, youtu.be, live, embed, and playlist URLs)
         function extractYouTubeId(urlOrId) {
-            if (!urlOrId) return 'PL3aA3yXz_y8Z_V0d1I1jV2A1';
+            if (!urlOrId) return '9689Bhx7N2A';
             const clean = urlOrId.trim();
+            if (clean.includes('list=')) {
+                const listMatch = clean.match(/[?&]list=([^#\&\?]+)/);
+                if (listMatch && listMatch[1]) return listMatch[1];
+            }
             if (clean.includes('youtube.com') || clean.includes('youtu.be')) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|live\/)([^#\&\?]*).*/;
                 const match = clean.match(regExp);
                 return (match && match[2].length === 11) ? match[2] : clean;
             }
             return clean;
         }
 
+        // Only reload iframe when Video ID changes so video keeps playing during 60s sync
         function updateYouTubeEmbed() {
             const iframe = document.getElementById('youtube-iframe');
             const ytId = extractYouTubeId(state.youtubeVideoId);
-            
-            // Handle playlist vs single video
+            if (ytId === lastRenderedYouTubeId) return;
+            lastRenderedYouTubeId = ytId;
+
             if (ytId.startsWith('PL')) {
                 iframe.src = `https://www.youtube.com/embed/videoseries?list=${ytId}&autoplay=1&mute=1&loop=1&enablejsapi=1`;
             } else {
@@ -481,112 +2550,193 @@
             }
         }
 
-        // Render Dashboard Cards
+        function getDefaultRoleLabel(idx) {
+            if (idx === 0) return 'PENGAWAS PIKET';
+            if (idx === 1) return 'WIRA PIKET';
+            return 'ANGGOTA PIKET ' + (idx - 1);
+        }
+
+        // Render Dashboard (All Slides)
         function renderDashboard() {
             document.getElementById('display-office-name').innerText = state.officeName;
             document.getElementById('running-text').innerText = state.runningText;
+            document.getElementById('display-maklumat-text').innerText = state.maklumatText || DEFAULT_MAKLUMAT;
 
+            if (state.ptspHours) {
+                document.getElementById('display-ptsp-mon-thu').innerText = state.ptspHours.monThu || '08.00 – 16.00 WITA';
+                document.getElementById('display-ptsp-fri').innerText = state.ptspHours.fri || '08.00 – 16.30 WITA';
+            }
+
+            // Update Contact Info on Slide 2
+            if (state.contactInfo) {
+                document.getElementById('display-contact-hotline').innerText = state.contactInfo.hotline || '';
+                document.getElementById('display-contact-web').innerText = state.contactInfo.web || '';
+                document.getElementById('display-contact-address').innerText = state.contactInfo.address || '';
+            }
+
+            // Render Duty Schedule on Slide 1
+            const dutyHoursText = (state.timeSettings && state.timeSettings.dutyHours) ? state.timeSettings.dutyHours : '07.00 - 16.00 WITA';
             const gridContainer = document.getElementById('days-grid');
             gridContainer.innerHTML = '';
 
-            state.schedule.forEach((dayData) => {
+            state.schedule.forEach((dayData, dayIndex) => {
                 const isToday = dayData.isToday;
+                const staggerClass = `stagger-${Math.min(dayIndex + 1, 4)}`;
 
                 let officersHtml = '';
                 dayData.officers.forEach((off, idx) => {
                     const isPengawas = idx === 0 || off.type === 'pengawas';
+                    const roleLabel = off.role || getDefaultRoleLabel(idx);
+                    const displayName = off.name && off.name.trim() !== '' ? escapeHtml(off.name) : '-';
+                    const displayNip = off.nip && off.nip.trim() !== '' ? escapeHtml(off.nip) : '-';
+                    const displayPosition = off.position && off.position.trim() !== '' ? escapeHtml(off.position) : '-';
 
                     if (isPengawas) {
                         officersHtml += `
-                            <!-- PENGAWAS PIKET -->
-                            <div class="supervisor-row rounded-xl p-2.5 relative overflow-hidden shadow-xs">
+                            <div class="supervisor-row rounded-xl p-2.5 relative overflow-hidden">
                                 <div class="flex items-center justify-between mb-0.5">
-                                    <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-kejati-gold text-white tracking-wider flex items-center gap-1 shadow-xs">
-                                        <i class="fa-solid fa-crown text-[8px]"></i> ${off.role || 'PENGAWAS'}
+                                    <span class="px-2 py-0.5 rounded-md text-[9px] font-black uppercase bg-gradient-to-r from-amber-700 to-amber-600 text-white tracking-wider flex items-center gap-1 shadow-xs">
+                                        ${escapeHtml(roleLabel)}
                                     </span>
-                                    <span class="text-[9px] font-extrabold text-kejati-gold tracking-widest uppercase">SUPERVISOR</span>
                                 </div>
                                 
                                 <h3 class="text-xs lg:text-sm font-black text-kejati-dark truncate font-outfit uppercase leading-snug mt-0.5">
-                                    ${off.name}
+                                    ${displayName}
                                 </h3>
                                 
                                 <div class="text-[10px] font-bold text-slate-600 font-mono">
-                                    <span>NIP: ${off.nip || '-'}</span>
+                                    <span>NIP: ${displayNip}</span>
                                 </div>
                                 <p class="text-[10px] text-kejati-gold font-bold truncate">
-                                    <i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${off.position}
+                                    <i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${displayPosition}
                                 </p>
                             </div>
                         `;
                     } else {
                         officersHtml += `
-                            <!-- ANGGOTA PIKET CARD -->
-                            <div class="officer-row rounded-xl p-2 relative shadow-xs">
+                            <div class="officer-row rounded-xl p-2 relative">
                                 <div class="flex items-center justify-between">
                                     <span class="text-[9px] font-black text-kejati-primary uppercase tracking-wider">
-                                        ${off.role || ('ANGGOTA ' + idx)}
+                                        ${escapeHtml(roleLabel)}
                                     </span>
                                 </div>
                                 
                                 <h3 class="text-xs font-extrabold text-slate-800 truncate font-outfit uppercase leading-snug">
-                                    ${off.name}
+                                    ${displayName}
                                 </h3>
                                 
                                 <div class="text-[10px] text-slate-500 font-mono font-semibold">
-                                    <span>NIP: ${off.nip || '-'}</span>
+                                    <span>NIP: ${displayNip}</span>
                                 </div>
-                                <p class="text-[10px] font-semibold text-emerald-700 truncate">${off.position}</p>
+                                <p class="text-[10px] font-semibold text-emerald-700 truncate">${displayPosition}</p>
                             </div>
                         `;
                     }
                 });
 
                 const dayCardHtml = `
-                    <div class="bright-day-card rounded-2xl p-3 flex flex-col justify-between h-full relative ${isToday ? 'active-day animate-pulse-glow' : ''}">
-                        
-                        <!-- Day Header -->
-                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b-2 border-kejati-border">
+                    <div 
+                        draggable="true"
+                        ondragstart="onDayDragStart(event, ${dayIndex})"
+                        ondragend="onDayDragEnd(event)"
+                        ondragover="onDayDragOver(event, ${dayIndex})"
+                        ondragleave="onDayDragLeave(event)"
+                        ondrop="onDayDrop(event, ${dayIndex})"
+                        title="Tarik untuk menggeser urutan kartu hari"
+                        class="stagger-card ${staggerClass} bright-day-card rounded-2xl p-3 flex flex-col justify-between h-full relative cursor-grab active:cursor-grabbing ${isToday ? 'active-day' : ''}"
+                    >
+                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b-2 ${isToday ? 'border-amber-300' : 'border-kejati-border'}">
                             <div>
                                 <h2 class="text-lg lg:text-xl font-black font-outfit text-kejati-dark tracking-wider uppercase leading-none">
-                                    ${dayData.dayName}
+                                    ${escapeHtml(dayData.dayName)}
                                 </h2>
-                                <span class="text-[10px] text-kejati-primary font-bold tracking-widest uppercase">${dayData.dateLabel || 'Jadwal Reguler'}</span>
+                                <span class="text-[10px] text-kejati-primary font-bold tracking-widest uppercase">${escapeHtml(dayData.dateLabel || 'Jadwal Reguler')}</span>
                             </div>
                             
                             ${isToday ? `
-                                <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white flex items-center gap-1 shadow-xs animate-badge-bounce">
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-white flex items-center gap-1 shadow-md border-b-2 border-amber-700 animate-badge-bounce">
                                     <i class="fa-solid fa-star text-[7px]"></i> HARI INI
                                 </span>
                             ` : `
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">4 Petugas</span>
+                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider bg-white/80 px-2 py-0.5 rounded-md border border-slate-200">${dayData.officers.length} Petugas</span>
                             `}
                         </div>
 
-                        <!-- 4 Officers List -->
-                        <div class="space-y-1.5 flex-grow flex flex-col justify-between">
+                        <div class="space-y-1.5 flex-grow flex flex-col justify-between relative z-10">
                             ${officersHtml}
                         </div>
 
-                        <!-- Footer Status Indicator -->
-                        <div class="mt-2 pt-1.5 border-t border-slate-200 flex justify-between items-center text-[10px] font-bold text-slate-500">
-                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>08.00 - 16.00 WITA</span>
-                            <span class="font-extrabold uppercase text-kejati-emerald flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Siaga
+                        <div class="mt-2 pt-1.5 border-t border-slate-200/80 flex justify-between items-center text-[10px] font-bold text-slate-600 relative z-10">
+                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>${escapeHtml(dutyHoursText)}</span>
+                            <span class="font-extrabold uppercase text-kejati-emerald flex items-center gap-1.5">
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Siaga
                             </span>
                         </div>
-
                     </div>
                 `;
                 gridContainer.innerHTML += dayCardHtml;
             });
         }
 
+        // Toggle Manual Time Inputs
+        function toggleManualTimeInputs() {
+            const mode = document.getElementById('input-clock-mode').value;
+            const dateInput = document.getElementById('input-manual-date');
+            const timeInput = document.getElementById('input-manual-time');
+            const isManual = mode === 'manual';
+            dateInput.disabled = !isManual;
+            timeInput.disabled = !isManual;
+        }
+
         // Admin Settings Modal Functions
         function openAdminModal() {
+            isModalOpen = true;
+            restartSlideTimer();
+
+            // Google Sheet URL
+            document.getElementById('input-sheet-url').value = getActiveSheetUrl();
+
+            // Slide Settings
+            const ss = state.slideSettings || { autoPlay: true, durationSec: 12, enabledSlides: [true, true, true] };
+            document.getElementById('input-slide-autoplay').value = String(ss.autoPlay !== false);
+            document.getElementById('input-slide-duration').value = ss.durationSec || 12;
+            for (let i = 0; i < SLIDE_META.length; i++) {
+                document.getElementById(`chk-slide-${i}`).checked = ss.enabledSlides ? ss.enabledSlides[i] !== false : true;
+            }
+
+            // General & Contact Settings
             document.getElementById('input-office-name').value = state.officeName;
+            document.getElementById('input-logo-url').value = state.logoUrl || DEFAULT_LOGO_URL;
             document.getElementById('input-youtube-id').value = state.youtubeVideoId || '';
             document.getElementById('input-running-text').value = state.runningText;
+            document.getElementById('input-maklumat-text').value = state.maklumatText || DEFAULT_MAKLUMAT;
+
+            const ci = state.contactInfo || {};
+            document.getElementById('input-contact-hotline').value = ci.hotline || '';
+            document.getElementById('input-contact-web').value = ci.web || '';
+            document.getElementById('input-contact-address').value = ci.address || '';
+
+            // Time Settings
+            const ts = state.timeSettings || { mode: 'auto', offsetMs: 0, dutyHours: '07.00 - 16.00 WITA' };
+            document.getElementById('input-clock-mode').value = ts.mode || 'auto';
+            document.getElementById('input-duty-hours').value = ts.dutyHours || '07.00 - 16.00 WITA';
+
+            const currentDisplayNow = getEffectiveNow();
+            const yyyy = currentDisplayNow.getFullYear();
+            const mm = String(currentDisplayNow.getMonth() + 1).padStart(2, '0');
+            const dd = String(currentDisplayNow.getDate()).padStart(2, '0');
+            const hh = String(currentDisplayNow.getHours()).padStart(2, '0');
+            const min = String(currentDisplayNow.getMinutes()).padStart(2, '0');
+            const ssSec = String(currentDisplayNow.getSeconds()).padStart(2, '0');
+
+            document.getElementById('input-manual-date').value = `${dd}-${mm}-${yyyy}`;
+            document.getElementById('input-manual-time').value = `${hh}:${min}:${ssSec}`;
+            toggleManualTimeInputs();
+
             renderAdminForm();
 
             const modal = document.getElementById('admin-modal');
@@ -597,7 +2747,11 @@
         function closeAdminModal() {
             const modal = document.getElementById('admin-modal');
             modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                isModalOpen = false;
+                restartSlideTimer();
+            }, 300);
         }
 
         function renderAdminForm() {
@@ -608,23 +2762,24 @@
                 let officersFormHtml = '';
                 dayData.officers.forEach((off, offIdx) => {
                     const isPengawas = offIdx === 0;
+                    const formSectionTitle = off.role || getDefaultRoleLabel(offIdx);
                     officersFormHtml += `
                         <div class="p-3 ${isPengawas ? 'bg-amber-50 border border-amber-300' : 'bg-white border border-slate-200'} rounded-xl space-y-2 shadow-xs">
                             <span class="text-[10px] font-black ${isPengawas ? 'text-amber-700' : 'text-kejati-primary'} uppercase">
-                                ${isPengawas ? '👑 PENGAWAS PIKET' : ('ANGGOTA PIKET ' + offIdx)}
+                                ${escapeHtml(formSectionTitle)}
                             </span>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Nama Lengkap & Gelar</label>
-                                    <input type="text" value="${off.name}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi nama petugas..." value="${escapeHtml(off.name || '')}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">NIP / NRP</label>
-                                    <input type="text" value="${off.nip}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi NIP / NRP..." value="${escapeHtml(off.nip || '')}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Pangkat / Jabatan / Regu</label>
-                                    <input type="text" value="${off.position}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi jabatan / bagian..." value="${escapeHtml(off.position || '')}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                             </div>
                         </div>
@@ -634,8 +2789,8 @@
                 const dayBlockHtml = `
                     <div class="bg-white p-4 rounded-xl border border-kejati-border shadow-sm space-y-3">
                         <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                            <input type="text" value="${dayData.dayName}" onchange="updateDayName(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-kejati-primary font-black text-sm rounded px-2.5 py-1 uppercase font-outfit">
-                            <input type="text" value="${dayData.dateLabel || ''}" placeholder="Label Hari" onchange="updateDayLabel(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-slate-600 text-xs font-bold rounded px-2 py-1">
+                            <input type="text" value="${escapeHtml(dayData.dayName)}" onchange="updateDayName(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-kejati-primary font-black text-sm rounded px-2.5 py-1 uppercase font-outfit">
+                            <input type="text" value="${escapeHtml(dayData.dateLabel || '')}" placeholder="Label Hari" onchange="updateDayLabel(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-slate-600 text-xs font-bold rounded px-2 py-1">
                         </div>
                         <div class="space-y-2">
                             ${officersFormHtml}
@@ -659,14 +2814,68 @@
         }
 
         function saveAdminSettings() {
+            const clockMode = document.getElementById('input-clock-mode').value;
+            const dutyHours = document.getElementById('input-duty-hours').value.trim() || '07.00 - 16.00 WITA';
+            let offsetMs = 0;
+
+            if (clockMode === 'manual') {
+                const dateVal = document.getElementById('input-manual-date').value;
+                const timeVal = document.getElementById('input-manual-time').value;
+                const targetDate = parseManualDateTime(dateVal, timeVal);
+
+                if (!targetDate) {
+                    alert('Format Tanggal atau Jam Manual tidak valid.\n\nContoh Tanggal: 26-11-2026\nContoh Jam: 07:30:00 atau 07:30');
+                    return;
+                }
+                offsetMs = targetDate.getTime() - Date.now();
+            }
+
+            // Save Slide Settings (3 Slides)
+            const enabledSlides = [
+                document.getElementById('chk-slide-0').checked,
+                document.getElementById('chk-slide-1').checked,
+                document.getElementById('chk-slide-2').checked
+            ];
+            if (!enabledSlides.some(Boolean)) {
+                enabledSlides[0] = true;
+            }
+            const durationSec = Math.min(120, Math.max(4, parseInt(document.getElementById('input-slide-duration').value, 10) || 12));
+            state.slideSettings = {
+                autoPlay: document.getElementById('input-slide-autoplay').value === 'true',
+                durationSec: durationSec,
+                enabledSlides: enabledSlides
+            };
+
+            state.sheetApiUrl = document.getElementById('input-sheet-url').value.trim();
             state.officeName = document.getElementById('input-office-name').value;
+            state.logoUrl = document.getElementById('input-logo-url').value.trim() || DEFAULT_LOGO_URL;
             state.youtubeVideoId = document.getElementById('input-youtube-id').value;
             state.runningText = document.getElementById('input-running-text').value;
+            state.maklumatText = document.getElementById('input-maklumat-text').value.trim() || DEFAULT_MAKLUMAT;
 
+            state.contactInfo = {
+                hotline: document.getElementById('input-contact-hotline').value.trim(),
+                web: document.getElementById('input-contact-web').value.trim(),
+                address: document.getElementById('input-contact-address').value.trim()
+            };
+
+            state.timeSettings = {
+                mode: clockMode,
+                offsetMs: offsetMs,
+                dutyHours: dutyHours
+            };
+
+            applyAllLogos();
             syncCurrentDayHighlight();
-            localStorage.setItem('kejati_piket_split_v1', JSON.stringify(state));
+            persistState();
             renderDashboard();
             updateYouTubeEmbed();
+
+            const activeIndices = getEnabledSlideIndices();
+            if (!activeIndices.includes(currentSlideIdx)) {
+                currentSlideIdx = activeIndices[0];
+            }
+            updateSlideHeaderAndView(false);
             closeAdminModal();
         }
 
